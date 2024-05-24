@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "chalk": "^5.3.0",
+    "inquirer": "^9.2.22"
+  },
+  "type": "module"
+}
