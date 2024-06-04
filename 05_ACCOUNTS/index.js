@@ -41,7 +41,6 @@ function operation() {
         case 'Sair':
           console.log(chalk.bgBlue.black('Obrigado por usar o Accounts!'));
           process.exit();
-          break;
         default:
           console.log(chalk.bgMagenta('Ação inválida!'));
           break;
@@ -232,7 +231,7 @@ function consult() {
     });
 }
 
-// Sacar saldo
+/* SACAR SALDO */
 function sacar() {
   inquirer
     .prompt([
@@ -248,8 +247,6 @@ function sacar() {
         return sacar();
       } else {
         const accountData = getAccount(accountName);
-
-        //console.log(`Valor atual da conta: R$ ${accountData.balance}`);
 
         const questions = [
           {
@@ -273,7 +270,9 @@ function sacar() {
               console.log(chalk.bgGreen.black('Saque efetuado'));
               operation();
             } else {
+              console.log(chalk.bgRed.black('Saldo insuficiente!'));
               sacar();
+              P;
             }
           })
           .catch(err => {
