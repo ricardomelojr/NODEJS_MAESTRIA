@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Layout com Tailwind CSS</title>
+    <!-- <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    /> -->
+  </head>
+  <body class="bg-gray-100">
+    <!-- Cabeçalho -->
+    <header class="bg-blue-600 p-4">
+      <div class="container mx-auto flex justify-between items-center">
+        <a href="#" class="text-white text-lg font-bold">MeuSite</a>
+        <nav>
+          <a href="#home" class="text-white px-4 py-2">Home</a>
+          <a href="#dashboard" class="text-white px-4 py-2">Dashboard</a>
+          <a href="#blog" class="text-white px-4 py-2">Blog</a>
+        </nav>
+      </div>
+    </header>
+    <div>{{body}}</div>
+    <!-- Rodapé -->
+    <footer class="bg-blue-600 p-4 text-white text-center">
+      <p>&copy; 2024 MeuSite. Todos os direitos reservados.</p>
+    </footer>
+  </body>
+</html>
