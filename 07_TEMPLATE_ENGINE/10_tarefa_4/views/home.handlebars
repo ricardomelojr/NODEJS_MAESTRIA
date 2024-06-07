@@ -1,0 +1,20 @@
+<html lang='en'>
+  <head>
+    <meta charset='UTF-8' />
+    <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+    <title>Products</title>
+  </head>
+  <body>
+    <h1>Configura os nossos produtos</h1>
+    {{#each products}}
+      <div>
+        <h3>Título: {{this.title}}</h3>
+        <p>Preço: R$ {{this.price}}</p>
+        <p><a href='/product/{{this.id}}'>Ver mais</a></p>
+      </div>
+    {{/each}}
+    <footer>
+      Footer
+    </footer>
+  </body>
+</html>
