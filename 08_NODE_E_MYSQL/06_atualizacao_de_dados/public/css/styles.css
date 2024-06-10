@@ -1,0 +1,100 @@
+* {
+  font-family: Helvetica;
+}
+
+#navbar {
+  border-bottom: 1px solid #ccc;
+  padding: 0.5em;
+  margin-bottom: 1em;
+}
+
+#navbar ul {
+  display: flex;
+  list-style: none;
+  margin: 0;
+}
+
+#navbar ul li {
+  margin-left: 1em;
+}
+
+h1 {
+  text-align: center;
+}
+
+.form,
+.books-container {
+  width: 450px;
+  margin: 0 auto;
+}
+
+.form-control {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0.5em;
+}
+
+.form-control label {
+  font-weight: bold;
+  margin-bottom: 0.3em;
+}
+
+.form-control input {
+  padding: 5px;
+}
+
+#fazOLButton {
+  background-color: red;
+  font-weight: bold;
+}
+
+#fazOL {
+  background-color: red;
+  font-weight: bold;
+}
+
+.books-container div {
+  border-bottom: 1px solid#CCC;
+  padding: 5px;
+  margin: 5px;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+/* BOOK PAGE */
+#book-page {
+  width: 100%;
+  max-width: 600px;
+  padding: 20px;
+  background: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+h1 {
+  color: #333;
+  margin-bottom: 20px;
+}
+
+p {
+  color: #666;
+  margin-bottom: 20px;
+}
+
+a {
+  color: #007bff;
+  text-decoration: none;
+  margin-bottom: 10px;
+}
+
+a:hover {
+  text-decoration: underline;
+}
