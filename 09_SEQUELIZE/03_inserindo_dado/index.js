@@ -21,6 +21,10 @@ app.set('views', './views');
 
 app.use(express.static('public'));
 
+app.get('/users/create', (req, res) => {
+  res.render('adduser');
+});
+
 app.get('/', (req, res) => {
   res.render('home');
 });
