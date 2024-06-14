@@ -1,0 +1,6 @@
+141 - Refazer as tabelas
+- Podemos forçar a reconstrução das tabelas;
+- No método sync, onde são sincronizados os models e as tabelas;
+- Vamos colocar um atributo: force como true;
+- Exemplo: sync ({force: true})
+- Note que os dados são perdidos neste processo;

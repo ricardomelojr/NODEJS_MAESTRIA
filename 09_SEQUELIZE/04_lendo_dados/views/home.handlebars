@@ -3,23 +3,22 @@
   <table>
     <thead>
       <tr>
-        <th>Nome</th>
-        <th>Ocupação</th>
-        <th>Ações</th>
+        <th class='head'>Nome</th>
+        <th class='head'>Ocupação</th>
+        <th class='head'>Ações</th>
       </tr>
     </thead>
     <tbody>
       {{#each users}}
         <tr>
-          <td>{{this.name}}</td>
-          <td>{{this.occupation}}</td>
+          <td class='infoData'>{{this.name}}</td>
+          <td class='infoData'>{{this.occupation}}</td>
           <td class='actions'>
             <button class='edit-btn'>Editar</button>
             <button class='remove-btn'>Remover</button>
           </td>
         </tr>
       {{/each}}
-      <!-- Adicione mais linhas conforme necessário -->
     </tbody>
   </table>
 </div>

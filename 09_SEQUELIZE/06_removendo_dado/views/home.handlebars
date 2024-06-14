@@ -1,0 +1,33 @@
+<h1 class='h1user'>Usuários Cadastrados</h1>
+<div class='table-container'>
+  <table>
+    <thead>
+      <tr>
+        <th class='head'>Nome</th>
+        <th class='head'>Ocupação</th>
+        <th class='head'>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each users}}
+        <tr>
+          <td class='infoData'>{{this.name}}</td>
+          <td class='infoData'>{{this.occupation}}</td>
+          <td class='actions'>
+            <a href='/users/{{this.id}}'><button class='edit-btn'>Ver detalhes</button>
+            </a>
+
+            <form
+              class='form-post'
+              action='/users/delete/{{this.id}}'
+              method='post'
+            >
+              <button class='remove-btn' type='submit'>Remover</button>
+            </form>
+
+          </td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>
