@@ -1,0 +1,162 @@
+/* Geral */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Navbar */
+#navbar {
+  background: #333;
+  color: #fff;
+  padding: 10px 0;
+}
+
+#navbar ul {
+  list-style: none;
+  padding: 0;
+  text-align: center;
+  margin: 0;
+}
+
+#navbar ul li {
+  display: inline;
+  margin: 0 15px;
+}
+
+#navbar ul li a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+#navbar ul li a:hover {
+  text-decoration: underline;
+}
+
+/* Formulário */
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form h1 {
+  text-align: center;
+}
+
+.form-control {
+  margin-bottom: 15px;
+}
+
+.form-control label {
+  margin-bottom: 5px;
+  display: block;
+}
+
+.form-control input[type='text'],
+.form-control input[type='submit'] {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.form-checkbox {
+  display: flex;
+  align-items: center;
+}
+
+.form-checkbox label {
+  margin-left: 5px;
+}
+
+input[type='submit'] {
+  background: #333;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+input[type='submit']:hover {
+  background: #555;
+}
+
+/* Tabela */
+.table-container {
+  margin-top: 20px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead {
+  background: #333;
+  color: #fff;
+}
+
+th,
+td {
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+}
+
+button {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.edit-btn {
+  background: #4caf50;
+  color: #fff;
+}
+
+.edit-btn:hover {
+  background: #45a049;
+}
+
+.remove-btn {
+  background: #f44336;
+  color: #fff;
+}
+
+.remove-btn:hover {
+  background: #e53935;
+}
+
+.address-list {
+  margin-top: 1em;
+  padding-top: 1em;
+  border-top: 1px solid #ccc;
+}
+
+.address-list div {
+  display: flex;
+  margin-bottom: 1em;
+  padding-bottom: 1em;
+  border-bottom: 1px solid #ddd;
+}
+
+.address-list form {
+  margin-left: 1em;
+}
