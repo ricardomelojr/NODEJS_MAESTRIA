@@ -2,8 +2,12 @@
 
 {{#each tasks}}
   <div class='tasks'>
-    <h3>{{title}}</h3>
-    <p>Descrição: {{description}}</p>
-    <p>Completa? {{done}}</p>
+    <a href='/'><h3>{{this.title}}</h3></a>
+    <p>Descrição: {{this.description}}</p>
+    <div class='actions'>
+      <a href='/'><i class='bi bi-check2'></i></a>
+      <a href='/'><i class='bi bi-pencil-square'></i></a>
+      <a href='/'><i class='bi bi-x-square'></i></a>
+    </div>
   </div>
 {{/each}}
