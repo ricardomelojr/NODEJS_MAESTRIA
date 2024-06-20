@@ -19,11 +19,14 @@ body {
 #navbar {
   background-color: #402e7a; /* Cor da barra de navegação */
   padding: 10px 0;
+  display: flex;
+  justify-content: space-between;
 }
 
 #navbar ul {
   list-style-type: none;
   text-align: right;
+  align-content: center;
 }
 
 #navbar ul li {
@@ -41,15 +44,20 @@ body {
   text-decoration: underline;
 }
 
+h2 {
+  padding: 10px;
+  color: #fff;
+}
+
 /* Estilos para a seção de conteúdo */
 .container {
   max-width: 800px;
   margin: 20px auto;
   background-color: #fff; /* Cor de fundo da área de conteúdo */
   padding: 20px;
-  border-radius: 8px;
+  border-radius: 1px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  border: 2px dashed;
+  border: 1px dashed;
 }
 
 /* Estilos para o formulário de criação de tarefa */
@@ -79,7 +87,7 @@ input[type='submit'] {
   cursor: pointer;
   padding: 0.7em 1.5em;
   border-radius: 5px;
-  width: 100%;
+  width: 25%;
 }
 
 input[type='submit']:hover {

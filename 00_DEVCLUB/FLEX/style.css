@@ -1,0 +1,24 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.container {
+  background-color: #1e293b;
+  height: 100vh;
+  width: 100vw;
+  padding: 10px;
+  display: flex;
+  gap: 20px;
+}
+
+.item {
+  background-color: #7e22ce;
+  color: #fff;
+  /* margin: 10px; */
+  font-size: 22px;
+  border-radius: 5px;
+  height: 150px;
+  width: 150px;
+}
