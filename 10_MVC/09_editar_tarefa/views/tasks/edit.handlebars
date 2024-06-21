@@ -1,0 +1,24 @@
+{{! EDIT.HANDLEBARS }}
+<h1>Editando a tarefa: {{task.title}}</h1>
+<form action='/tasks/update' method='post'>
+  <input type='hidden' name='id' value='{{task.id}}' />
+  <div class='form-control'>
+    <label for='title'>Título</label>
+    <input
+      type='text'
+      name='title'
+      id=''
+      placeholder='O que você deseja fazer?'
+      value='{{task.title}}'
+    />
+  </div>
+  <div class='form-control'>
+    <label for='description'>Descrição</label>
+    <textarea
+      name='description'
+      id=''
+      placeholder={{'Descreva a tarefa...'}}
+    >{{task.description}}</textarea>
+  </div>
+  <input type='submit' value='Editar' />
+</form>
