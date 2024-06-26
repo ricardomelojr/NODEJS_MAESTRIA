@@ -3,12 +3,23 @@ import { engine } from 'express-handlebars';
 import session from 'express-session';
 import SessionFileStore from 'session-file-store';
 import flash from 'express-flash';
-import conn from './db/conn.js';
 import path from 'path';
 import os from 'os';
+import conn from './db/conn.js';
 
 const app = express();
 const FileStore = SessionFileStore(session);
+
+/* Models */
+import Tought from './models/Tought.js';
+import User from './models/User.js';
+
+/* ROUTES */
+import toughtsRoutes from './routes/toughtsRoutes.js';
+import authRoutes from './routes/authRoutes.js';
+
+/* IMPORT CONTROLLER */
+import ToughtsController from './controllers/ToughtsController.js';
 
 // Configuração do motor de visualização
 app.engine('handlebars', engine());
@@ -32,8 +43,8 @@ app.use(
     }),
     cookie: {
       secure: false, // Defina como true se estiver usando HTTPS
-      maxAge: 360000, // Duração da sessão em milissegundos
-      expires: new Date(Date.now() + 360000), // Data de expiração do cookie
+      maxAge: 3600000, // Duração da sessão em milissegundos
+      expires: new Date(Date.now() + 3600000), // Data de expiração do cookie
       httpOnly: true, // O cookie só será acessível pelo protocolo HTTP
     },
   })
@@ -42,26 +53,33 @@ app.use(
 // Middleware para mensagens flash
 app.use(flash());
 
-//public path
+// Public path
 app.use(express.static('public'));
 
-// se session to res
+// Middleware para expor a sessão para as views
 app.use((req, res, next) => {
   if (req.session.userid) {
     res.locals.session = req.session;
   }
+
   next();
 });
 
-// Rota principal
-app.get('/', (req, res) => {
-  res.render('home');
-});
+/* ROTAS */
+app.use('/toughts', toughtsRoutes);
+app.use('/', authRoutes);
+
+// Esta rota aponta para a mesma rota de /toughts, que são todos os pensamentos.
+app.get('/', ToughtsController.showToughts);
+
+// Adicionando a rota diretamente
+//app.get('/dashboard', ToughtsController.dashboard);
 
 // Conexão com o banco de dados e inicialização do servidor
 const port = 3000;
 
 conn
+  //.sync({ force: true })
   .sync()
   .then(() => {
     app.listen(port, () => {

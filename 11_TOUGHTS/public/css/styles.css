@@ -1,0 +1,358 @@
+* {
+  font-family: Helvetica;
+  margin: 0;
+  padding: 0;
+  background-color: #4c3bcf;
+  color: #fff;
+}
+
+/* NAVBAR */
+#logo img {
+  height: 40px;
+}
+
+#navbar {
+  padding: 1.2em 1.4em;
+  margin-bottom: 1em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #4c3bcf;
+  border: 1px dashed;
+}
+
+#navbar ul {
+  display: flex;
+  list-style: none;
+}
+
+#navbar ul li {
+  margin-left: 1em;
+}
+
+#navbar ul li a {
+  text-decoration: none;
+  font-weight: bold;
+  padding: 20px;
+}
+
+#navbar ul li a:hover {
+  border: 1px dashed;
+  padding: 19px;
+}
+
+/* CONTAINER */
+.container {
+  min-height: 70vh;
+  /* border: 1px dashed; */
+}
+
+/* MESSAGES */
+.message {
+  padding: 1em;
+  background-color: #fff;
+  color: #4c3bcf;
+  border: 1px solid #fff;
+  border-radius: 2px;
+  text-align: center;
+  margin: 0 auto 2em;
+  max-width: 60%;
+  transition: 1s;
+  font-weight: bold;
+}
+
+/* LOGIN E REGISTER */
+.auth-container {
+  max-width: 450px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.auth-container h2 {
+  margin-bottom: 1em;
+  color: #fff;
+  border-left: 1px solid #fff;
+  padding: 0.3em;
+  width: 100px;
+}
+
+.auth-container a {
+  color: #fff;
+}
+
+.form-control {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1em;
+}
+
+.form-control label {
+  font-weight: bold;
+  margin-bottom: 0.5em;
+}
+
+.form-control input,
+.form-control textarea {
+  padding: 7px;
+  border-radius: 2px;
+  border: 1px dashed #fff;
+  background-color: #fff;
+  color: #4c3bcf;
+}
+
+form input[type='submit'],
+.btn {
+  background-color: transparent;
+  color: #fff;
+  border: 1px dashed #fff;
+  padding: 0.5em 1.2em;
+  margin-bottom: 1em;
+  font-size: 1em;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: 1s;
+}
+
+form input[type='submit']:hover,
+.btn:hover {
+  color: #4c3bcf;
+  background-color: #fff;
+}
+
+/* CREATE / EDIT FORM */
+.tought-form-container a {
+  text-decoration: none;
+  color: #fff;
+  border: 1px solid #fff;
+  padding: 10px;
+  transition: 1s;
+}
+.tought-form-container a:hover {
+  background-color: #fff;
+  color: #4c3bcf;
+}
+
+.tought-form-container h1 {
+  margin: 1em 0;
+  color: #fff;
+  border-left: 1px solid #fff;
+  padding: 0.3em;
+}
+
+.tought-form-container {
+  max-width: 30%;
+  margin: 0 auto;
+}
+
+/* DASHBOARD */
+.dashboard {
+  max-width: 1000px;
+  margin: 50px auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Título e botão de criação */
+.title-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.title-container h2 {
+  margin: 10px;
+  font-size: 24px;
+  color: #ffffff;
+}
+
+.title-container .btn {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 20px;
+  text-decoration: none;
+  border-radius: 4px;
+  font-size: 14px;
+  margin: 10px;
+}
+
+.title-container .btn:hover {
+  background-color: #0056b3;
+}
+
+/* Título dos pensamentos */
+.dashboard h3 {
+  margin-bottom: 10px;
+  font-size: 20px;
+  color: #ffffff;
+  padding: 10px;
+}
+
+/* Lista de pensamentos */
+.dashboard ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.dashboard li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  border-bottom: 5px solid #ffffff;
+}
+
+.dashboard li .label {
+  font-size: 16px;
+  color: #ffffff;
+}
+
+/* Ações */
+.dashboard .actions {
+  display: flex;
+  gap: 10px;
+}
+
+.dashboard .actions .btn {
+  background-color: #007bff;
+  color: #fff;
+  padding: 5px 10px;
+  text-decoration: none;
+  border-radius: 4px;
+  font-size: 12px;
+  margin: 0;
+}
+
+.dashboard .actions .btn:hover {
+  background-color: #0056b3;
+}
+
+.dashboard .actions form {
+  display: inline-block;
+}
+
+.dashboard .actions form .btn {
+  background-color: #dc3545;
+  border: 1px dashed #fff;
+  cursor: pointer;
+}
+
+.dashboard .actions form .btn:hover {
+  background-color: #c82333;
+}
+
+.dashboard p {
+  margin-top: 100px;
+  padding: 10px;
+  font-weight: bold;
+  font-style: italic;
+}
+/* FOOTER */
+footer {
+  height: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+footer span {
+  font-weight: bold;
+}
+
+/* HOME TODOS OS PENSAMENTOS */
+
+/* Estilo do cabeçalho */
+
+.home-header {
+  color: white;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.home-header form input {
+  padding: 7px;
+  border-radius: 2px;
+  border: 1px dashed #fff;
+  background-color: #fff;
+  color: #4c3bcf;
+  width: 200px;
+}
+
+.home-header .btn {
+  background-color: #4c3bcf;
+  color: #fff;
+  padding: 8px 20px;
+  text-decoration: none;
+  border-radius: 4px;
+  font-size: 14px;
+  margin: 10px;
+}
+
+.home-header .btn:hover {
+  background-color: #ffffff;
+}
+
+.home-header h1 {
+  margin: 0;
+  font-size: 2em;
+  text-decoration: underline;
+}
+
+.order-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+}
+
+/* Estilo do container dos pensamentos */
+.toughts-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 20px;
+}
+
+/* Estilo das figuras dos pensamentos */
+figure {
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin: 10px;
+  padding: 20px;
+  width: calc(33.333% - 40px);
+  box-sizing: border-box;
+  transition: transform 0.2s ease-in-out;
+  border: 1px solid;
+}
+
+figure:hover {
+  transform: scale(1.05);
+}
+
+/* Estilo das citações */
+blockquote {
+  font-size: 1.2em;
+  margin: 0;
+  padding: 10px;
+  border-left: 4px solid #ffffff;
+  font-style: italic;
+}
+
+/* Estilo das legendas */
+figcaption {
+  text-align: right;
+  font-size: 0.9em;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+figcaption span {
+  color: #fff;
+  font-weight: 100;
+}
