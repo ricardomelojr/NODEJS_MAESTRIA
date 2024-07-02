@@ -23,6 +23,10 @@ class Product {
     const products = conn.db().collection('products').find().toArray();
     return products;
   }
+
+  static async getProductById(id) {
+    const product = conn.db().collection('products').findOne({ _id: id });
+  }
 }
 
 export default Product;

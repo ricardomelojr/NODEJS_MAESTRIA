@@ -30,6 +30,8 @@ export default class ProductController {
   static async getProduct(req, res) {
     const id = req.params.id;
 
-    const product = await Product.get
+    const product = await Product.getProductById(id);
+
+    res.render('products/product', { product });
   }
 }
