@@ -1,4 +1,5 @@
 import conn from '../db/conn.js';
+import { ObjectId } from 'mongodb';
 
 class Product {
   constructor(name, image, price, description) {
@@ -8,8 +9,8 @@ class Product {
     this.description = description;
   }
 
-  save() {
-    const product = conn.db().collection('products').insertOne({
+  async save() {
+    const product = await conn.db().collection('products').insertOne({
       name: this.name,
       image: this.image,
       price: this.price,
@@ -19,13 +20,18 @@ class Product {
     return product;
   }
 
-  static getProducts() {
-    const products = conn.db().collection('products').find().toArray();
+  static async getProducts() {
+    const products = await conn.db().collection('products').find().toArray();
     return products;
   }
 
   static async getProductById(id) {
-    const product = conn.db().collection('products').findOne({ _id: id });
+    const product = await conn
+      .db()
+      .collection('products')
+      .findOne({ _id: new ObjectId(id) });
+
+    return product;
   }
 }
 
