@@ -15,9 +15,11 @@ app.use(express.static('public'));
 
 /* ROTAS IMPORT */
 import UserRoutes from './routes/UserRoutes.js';
+import PetRoutes from './routes/PetRoutes.js';
 
 /* ROTAS */
 app.use('/users', UserRoutes);
+app.use('/pets', PetRoutes);
 
 const PORT = 5000;
 app.listen(PORT, () => {

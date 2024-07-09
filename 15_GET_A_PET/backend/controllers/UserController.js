@@ -4,13 +4,14 @@ import User from '../models/User.js';
 import bcrypt from 'bcrypt';
 import getToken from '../helpers/get-token.js';
 import jwt from 'jsonwebtoken';
+import getUserByToken from '../helpers/get-user-by-token.js';
 
 export default class UserController {
   /* REGISTRAR */
   static async register(req, res) {
     const { name, email, phone, password, confirmpassword } = req.body;
 
-    // Validações
+    // * Validações
     if (!name) {
       return res.status(422).json({ message: 'O nome é obrigatório' });
     }
@@ -65,7 +66,9 @@ export default class UserController {
       return res.status(422).json({ message: 'A senha é obrigatória' });
     }
 
-    // Verificar se o usuário já existe
+    /*
+     * Verificar se o usuário já existe
+     */
     const user = await User.findOne({ email });
 
     if (!user) {
@@ -75,7 +78,9 @@ export default class UserController {
       return;
     }
 
-    /* CHECK IF PASSWORD MATCH WITH DB PASSWORD */
+    /*
+     * CHECK IF PASSWORD MATCH WITH DB PASSWORD
+     */
     const checkPassword = await bcrypt.compare(password, user.password);
 
     if (!checkPassword) {
@@ -85,7 +90,9 @@ export default class UserController {
 
     await createUserToken(user, req, res);
   }
-
+  /*
+   * CHECK USER
+   */
   static async checkUser(req, res) {
     let currentUser = null;
 
@@ -94,9 +101,8 @@ export default class UserController {
         const token = getToken(req);
 
         const decoded = jwt.verify(token, 'nossosecret');
-        console.log(decoded);
 
-        currentUser = await User.findById(decoded._id);
+        currentUser = await User.findById(decoded.id);
         if (currentUser) {
           currentUser.password = undefined;
         }
@@ -106,5 +112,83 @@ export default class UserController {
     }
 
     res.status(200).send(currentUser);
+  }
+
+  /*
+   * GET USER BY ID
+   */
+  static async getUserById(req, res) {
+    const id = req.params.id;
+
+    const user = await User.findById(id).select('-password');
+    if (!user) {
+      res.status(422).json({ message: 'Usuário não encontrado!' });
+      return;
+    }
+
+    res.status(200).json({ user });
+  }
+
+  /*
+   * EDIT USER
+   */
+  static async editUser(req, res) {
+    const id = req.params.id;
+
+    // * CHECK IR USER EXISTS
+    const token = await getToken(req);
+    const user = await getUserByToken(token);
+
+    const { name, email, phone, password, confirmpassword } = req.body;
+
+    if (req.file) {
+      user.image = req.file.filename;
+    }
+
+    //* VALIDATIONS
+    if (!name) {
+      return res.status(422).json({ message: 'O nome é obrigatório' });
+    }
+    if (!email) {
+      return res.status(422).json({ message: 'O email é obrigatório' });
+    }
+    // * VERIFICAR SE O E-MAIL JÁ EXISTE
+    const userExists = await User.findOne({ email: email });
+    if (user.email !== email && userExists) {
+      res.status(422).json({ message: 'Por favor utilize outro e-mail!' });
+      return;
+    }
+    user.email = email;
+    if (!phone) {
+      return res.status(422).json({ message: 'O telefone é obrigatório' });
+    }
+
+    if (password !== confirmpassword) {
+      return res.status(422).json({ message: 'As senhas não conferem' });
+    } else if (password === confirmpassword && password != null) {
+      // * create password
+      /* create a password */
+      const salt = await bcrypt.genSalt(12);
+      const passwordHash = await bcrypt.hash(password, salt);
+
+      user.name = name;
+      user.email = email;
+      user.phone = phone;
+      user.password = passwordHash;
+    }
+
+    try {
+      // * retornar dados atualizados
+
+      await User.findOneAndUpdate(
+        { _id: user._id },
+        { $set: user },
+        { new: true }
+      );
+      res.status(200).json({ message: 'Usuário atualizado com sucesso!' });
+    } catch (err) {
+      res.status(500).json({ message: err });
+      return;
+    }
   }
 }
