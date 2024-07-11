@@ -79,7 +79,7 @@ export default class PetController {
   // * getAllUserPets
   static async getAllUserPets(req, res) {
     // * GET USER FROM TOKEN
-    const token = await getToken(req);
+    const token = getToken(req);
     const user = await getUserByToken(token);
 
     const pets = await Pet.find({ 'user._id': user._id }).sort('-createdAt');
@@ -89,12 +89,13 @@ export default class PetController {
 
   // * getAllUserAdoptions
   static async getAllUserAdoptions(req, res) {
-    const token = await getToken(req);
+    const token = getToken(req);
     const user = await getUserByToken(token);
 
     const pets = await Pet.find({ 'adopter._id': user._id }).sort('-createdAt');
     res.status(200).json({ pets });
   }
+
   // * getPetById
   static async getPetById(req, res) {
     const id = req.params.id;
@@ -103,37 +104,44 @@ export default class PetController {
       res.status(422).json({ message: 'ID inválido' });
       return;
     }
+
     // * CHECK IF PET EXISTS
     const pet = await Pet.findOne({ _id: id });
     if (!pet) {
-      res.status(404).json({ message: `Pet não encontrado` });
+      res.status(404).json({ message: 'Pet não encontrado' });
+      return;
     }
 
     res.status(200).json({ pet });
   }
 
-  //* removePetById
+  // * removePetById
   static async removePetById(req, res) {
     const id = req.params.id;
-    // * CHECAR SE O ID É VÁLIDO
+
+    // * CHECK IF ID IS VALID
     if (!ObjectId.isValid(id)) {
       res.status(422).json({ message: 'ID inválido' });
       return;
     }
+
     // * CHECK IF PET EXISTS
     const pet = await Pet.findOne({ _id: id });
     if (!pet) {
-      res.status(404).json({ message: `Pet não encontrado` });
+      res.status(404).json({ message: 'Pet não encontrado' });
+      return;
     }
 
-    // * CHECAR SE O USUÁRIO LOGADO REGISTROU O PET
+    // * CHECK IF LOGGED USER REGISTERED THE PET
     const token = getToken(req);
     const user = await getUserByToken(token);
 
     if (pet.user._id.toString() !== user._id.toString()) {
       res.status(422).json({
-        message: `Houve um problema em processar a sua solicitação, tente novamente mais tarde!`,
+        message:
+          'Houve um problema em processar a sua solicitação, tente novamente mais tarde!',
       });
+      return;
     }
 
     await Pet.findByIdAndDelete(id);
