@@ -12,6 +12,7 @@ export default class UserController {
     const { name, email, phone, password, confirmpassword } = req.body;
 
     // * Validações
+
     if (!name) {
       return res.status(422).json({ message: 'O nome é obrigatório' });
     }
