@@ -148,4 +148,91 @@ export default class PetController {
 
     res.status(200).json({ message: 'Pet removido com sucesso!' });
   }
+
+  // * updatePet
+  static async updatePet(req, res) {
+    const id = req.params.id;
+
+    // Check if the provided id is a valid ObjectId
+    if (!ObjectId.isValid(id)) {
+      res.status(422).json({ message: 'ID inválido' });
+      return;
+    }
+
+    // CHECK IF LOGGED USER REGISTERED THE PET
+    const token = getToken(req);
+    const user = await getUserByToken(token);
+
+    // Check if pet exists
+    const pet = await Pet.findOne({ _id: id });
+    if (!pet) {
+      res.status(404).json({ message: 'Pet não encontrado' });
+      return;
+    }
+
+    // Check if logged user registered the pet
+    if (pet.user._id.toString() !== user._id.toString()) {
+      res.status(422).json({
+        message:
+          'Houve um problema em processar a sua solicitação, tente novamente mais tarde!',
+      });
+      return;
+    }
+
+    // Extract update data from request body
+    const { name, age, weight, color, available } = req.body;
+    const images = req.files;
+    const updatedData = {};
+
+    // * VALIDATIONS
+    if (!name) {
+      res.status(422).json({ message: 'O nome é obrigatório!' });
+      return;
+    }
+    if (!age) {
+      res.status(422).json({ message: 'A idade é obrigatória!' });
+      return;
+    }
+    if (!weight) {
+      res.status(422).json({ message: 'O peso é obrigatório!' });
+      return;
+    }
+    if (!color) {
+      res.status(422).json({ message: 'A cor é obrigatória!' });
+      return;
+    }
+    if (!images || images.length === 0) {
+      res.status(422).json({ message: 'A imagem é obrigatória!' });
+      return;
+    } else {
+      updatedData.images = [];
+      images.map(image => {
+        updatedData.images.push(image.filename);
+      });
+    }
+
+    // Add new data to updatedData object
+    if (name) updatedData.name = name;
+    if (age) updatedData.age = age;
+    if (weight) updatedData.weight = weight;
+    if (color) updatedData.color = color;
+    if (typeof available !== 'undefined') updatedData.available = available;
+
+    // IMAGES PROCESSING
+    // if (images && images.length > 0) {
+    //   updatedData.images = images.map(image => image.filename);
+    // }
+
+    try {
+      // Update the pet in the database
+      const updatedPet = await Pet.findByIdAndUpdate(id, updatedData, {
+        new: true,
+      });
+      res
+        .status(200)
+        .json({ message: 'Pet atualizado com sucesso!', updatedPet });
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  }
 }
