@@ -28,6 +28,7 @@ router.patch(
   imageUpload.array('images'),
   PetController.updatePet
 );
-router.patch('/schedule/:id', verifyToken);
+router.patch('/schedule/:id', verifyToken, PetController.shedule);
+router.patch('/conclude/:id', verifyToken, PetController.concludeAdoption);
 
 export default router;
