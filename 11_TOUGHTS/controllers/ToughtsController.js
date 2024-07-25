@@ -4,6 +4,7 @@ import User from '../models/User.js';
 import { Op } from 'sequelize';
 
 export default class ToughtsController {
+  /* EXIBIR TODOS OS PENSAMENTOS */
   static async showToughts(req, res) {
     try {
       let search = '';
@@ -41,7 +42,7 @@ export default class ToughtsController {
       res.status(500).send('Internal Server Error');
     }
   }
-
+  /* ACESSAR O DASHBOARD */
   static async dashboard(req, res) {
     try {
       const userid = req.session.userid;
