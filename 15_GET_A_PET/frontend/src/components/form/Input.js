@@ -19,6 +19,7 @@ function Input({
         placeholder={placeholder}
         onChange={handleOnChange}
         value={value}
+        /* multiple: permite a seleção de múltiplos valores, no caso de imagens, permite selecionar várias imagens. */
         {...(multiple ? { multiple } : '')}
       ></input>
     </div>
