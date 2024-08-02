@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import useFlashMessage from './useFlashMessage';
 
 export default function useAuth() {
-  const [authenticated, setAuthenticated] = useState(false); // Corrigido para array
+  const [authenticated, setAuthenticated] = useState(false);
   const { setFlashMessage } = useFlashMessage();
   const navigate = useNavigate();
 
@@ -26,7 +26,6 @@ export default function useAuth() {
       const data = await api.post('/users/register', user).then(response => {
         return response.data;
       });
-      // console.log(data);
       await authUser(data);
     } catch (error) {
       msgText = error.response?.data?.message || 'Ocorreu um erro inesperado.';

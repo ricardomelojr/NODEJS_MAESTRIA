@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import formStyles from './Form.module.css';
 import Input from './Input';
 import Select from './Select';
@@ -8,8 +8,17 @@ function PetForm({ handleSubmit, petData, btnText }) {
   const [preview, setPreview] = useState([]);
   const colors = ['Branco', 'Preto', 'Cinza', 'Caramelo', 'Mesclado'];
 
+  useEffect(() => {
+    // Clean up the URLs created to avoid memory leaks
+    return () => {
+      preview.forEach(url => URL.revokeObjectURL(url));
+    };
+  }, [preview]);
+
   function onFileChange(e) {
-    setPet({ ...pet, images: [...e.target.files] });
+    const files = Array.from(e.target.files);
+    setPreview(files.map(file => URL.createObjectURL(file)));
+    setPet({ ...pet, images: files });
   }
 
   function handleChange(e) {
@@ -22,17 +31,24 @@ function PetForm({ handleSubmit, petData, btnText }) {
 
   function submit(e) {
     e.preventDefault();
-    console.log(pet);
     handleSubmit(pet);
   }
 
   return (
     <form onSubmit={submit} className={formStyles.form_container}>
-      <div>
+      <div className={formStyles.preview_pet_images}>
         {preview.length > 0
-          ? preview.map((image, index) => <p key={index}>teste</p>)
+          ? preview.map((image, index) => (
+              <img src={image} alt={pet.name} key={`${pet.name}+${index}`} />
+            ))
           : pet.images &&
-            pet.images.map((image, index) => <p key={index}>teste</p>)}
+            pet.images.map((image, index) => (
+              <img
+                src={`http://localhost:5000/images/pets/${image}`}
+                alt={pet.name}
+                key={`${pet.name}+${index}`}
+              />
+            ))}
       </div>
       <Input
         text="Imagens do Pet"

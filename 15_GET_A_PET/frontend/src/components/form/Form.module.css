@@ -30,3 +30,15 @@
   color: #16479d;
   font-weight: bold;
 }
+
+/* FORM DE PETS */
+.preview_pet_images {
+  display: flex;
+  justify-content: center;
+  margin: 1em;
+}
+
+.preview_pet_images img {
+  width: 150px;
+  height: 150px;
+}
