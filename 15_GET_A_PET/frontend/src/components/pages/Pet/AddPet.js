@@ -3,7 +3,7 @@ import styles from './AddPet.module.css';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useFlashMessage from '../../../hooks/useFlashMessage';
-import PetForm from '../../form/petForm';
+import PetForm from '../../form/PetForm';
 
 function AddPet() {
   const [token, setToken] = useState('');
