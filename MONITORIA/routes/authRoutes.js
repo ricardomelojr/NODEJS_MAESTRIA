@@ -9,7 +9,7 @@ router.get('/register', AuthController.register);
 router.get('/logout', AuthController.logout);
 
 /* POST */
-//router.post('/login', AuthController.loginPost);
+router.post('/login', AuthController.loginPost);
 router.post('/register', AuthController.registerPost);
 
 export default router;

@@ -25,7 +25,7 @@ export default class AuthController {
 
       if (userExists) {
         req.flash('message', 'O e-mail já está em uso!');
-        return res.render('auth/register');
+        return res.render('auth/register', { customCSS: '/css/register.css' });
       }
 
       // Criar senha criptografada
