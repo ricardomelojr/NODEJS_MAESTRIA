@@ -1,0 +1,39 @@
+<html>
+  <head>
+    <meta charset='utf-8' />
+    <title>Monitoria APP</title>
+    <link rel='stylesheet' href='/css/styles.css' />
+    {{#if customCSS}}
+      <link rel='stylesheet' href='{{customCSS}}' />
+    {{/if}}
+  </head>
+
+  <body>
+    <nav id='navbar'>
+      <ul>
+        <li id='monitoria-link'><a href='/'>Monitoria</a></li>
+        {{! URLS APÓS A AUTENTICAÇÃO }}
+        {{#if session.userid}}
+          {{!   <li><a href='/toughts/dashboard'>Dashboard</a></li>
+          <li><a href='/logout'>Sair</a></li> }}
+        {{else}}
+          <li><a href='/login'>Entrar</a></li>
+          <li><a href='/register'>Registrar</a></li>
+        {{/if}}
+
+      </ul>
+    </nav>
+    <div class='container'>
+      {{! MENSAGENS }}
+      {{#if messages.message}}
+        <div class='message'>
+          {{messages.message}}
+        </div>
+      {{/if}}
+      {{{body}}}
+    </div>
+    <footer>
+      <p><span>Monitoria</span> &copy; 2024</p>
+    </footer>
+  </body>
+</html>
