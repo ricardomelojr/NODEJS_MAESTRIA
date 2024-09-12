@@ -7,13 +7,13 @@ import path from 'path';
 import os from 'os';
 import conn from './db/conn.js';
 
-/* MODELS */
+/* IMPORT MODELS */
 import User from './models/User.js';
 
-/* CONTROLLERS */
+/* IMPORT CONTROLLERS */
 import AuthController from './controllers/AuthController.js';
 
-/* ROUTES */
+/* IMPORT ROUTES */
 import authRoutes from './routes/authRoutes.js';
 
 const app = express();
@@ -63,7 +63,7 @@ app.use((req, res, next) => {
   next();
 });
 
-/* USE */
+/* ROUTES */
 app.use('/', authRoutes);
 
 app.get('/', (req, res) => {
