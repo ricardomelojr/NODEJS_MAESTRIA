@@ -1,0 +1,35 @@
+<html lang='en'>
+  <head>
+    <meta charset='UTF-8' />
+    <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+    <title>Monitores</title>
+    <style>
+
+    </style>
+  </head>
+  <body>
+    <h1>Monitores</h1>
+
+    <div class='container-monitores'>
+      {{#if monitores.length}}
+        <ul class='monitor-list'>
+          {{#each monitores}}
+            <li class='monitor-item'>
+              <div>
+                <h2>{{name}}</h2>
+                <p><strong>Email:</strong> {{email}}</p>
+                <p><strong>Disciplina:</strong> {{subject}}</p>
+              </div>
+              <div class='monitor-actions'>
+                <a href='/edit/{{id}}' class='btn btn-edit'>Editar</a>
+                <a href='/delete/{{id}}' class='btn btn-delete'>Excluir</a>
+              </div>
+            </li>
+          {{/each}}
+        </ul>
+      {{else}}
+        <p class='no-monitors'>Nenhum monitor encontrado.</p>
+      {{/if}}
+    </div>
+  </body>
+</html>

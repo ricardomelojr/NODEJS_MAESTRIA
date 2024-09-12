@@ -1,0 +1,88 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4;
+  color: #333;
+}
+
+h1 {
+  text-align: center;
+  padding: 20px;
+  background-color: #333;
+  color: #fff;
+  margin: 0;
+}
+
+.container-monitores {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 0 20px;
+}
+
+.monitor-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.monitor-item {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 15px;
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.monitor-item h2 {
+  margin: 0;
+  font-size: 1.2em;
+  color: #333;
+}
+
+.monitor-item p {
+  margin: 5px 0;
+  color: #555;
+}
+
+.monitor-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.btn {
+  background-color: #007bff;
+  border: none;
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 0.9em;
+  transition: background-color 0.2s ease;
+}
+
+.btn-edit {
+  background-color: #28a745;
+}
+
+.btn-delete {
+  background-color: #dc3545;
+}
+
+.btn:hover {
+  opacity: 0.9;
+}
+
+.btn:focus {
+  outline: none;
+}
+
+.no-monitors {
+  text-align: center;
+  font-size: 1.2em;
+  color: #666;
+}
