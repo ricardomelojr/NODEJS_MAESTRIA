@@ -1,0 +1,73 @@
+<html lang='pt-br'>
+  <head>
+    <meta charset='UTF-8' />
+    <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+    <meta http-equiv='X-UA-Compatible' content='ie=edge' />
+    <title>Sistema de Tutoria</title>
+    <script src='https://cdn.tailwindcss.com'></script>
+  </head>
+  <body
+    class='bg-gradient-to-r from-blue-500 to-indigo-600 min-h-screen flex items-center justify-center'
+  >
+    <div class='bg-white shadow-lg rounded-lg p-8 max-w-md w-full'>
+      <h1 class='text-3xl font-bold text-center text-gray-800 mb-6'>Sistema de
+        Tutoria</h1>
+      <p class='text-gray-500 text-center mb-8'>Faça login para acessar sua
+        conta</p>
+
+      <form action='/login' method='POST' class='space-y-6'>
+        <div>
+          <label
+            for='email'
+            class='block text-sm font-medium text-gray-700'
+          >Email</label>
+          <input
+            type='email'
+            id='email'
+            name='email'
+            required
+            class='w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-400'
+          />
+        </div>
+
+        <div>
+          <label
+            for='password'
+            class='block text-sm font-medium text-gray-700'
+          >Senha</label>
+          <input
+            type='password'
+            id='password'
+            name='password'
+            required
+            class='w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-400'
+          />
+        </div>
+
+        <div class='flex items-center justify-between'>
+          <label class='inline-flex items-center'>
+            <input
+              type='checkbox'
+              class='form-checkbox h-5 w-5 text-indigo-600'
+            />
+            <span class='ml-2 text-gray-700'>Lembrar-me</span>
+          </label>
+          <a href='#' class='text-sm text-indigo-600 hover:underline'>Esqueceu a
+            senha?</a>
+        </div>
+
+        <div>
+          <button
+            type='submit'
+            class='w-full bg-indigo-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-400'
+          >Entrar</button>
+        </div>
+      </form>
+
+      <p class='text-center text-gray-500 mt-8'>
+        Não tem uma conta?
+        <a href='#' class='text-indigo-600 hover:underline'>Registre-se</a>
+      </p>
+    </div>
+  </body>
+</html>
