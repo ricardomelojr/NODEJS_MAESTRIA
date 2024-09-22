@@ -1,0 +1,54 @@
+<div class='min-h-screen bg-[#E9F1FA]'>
+  <div class='max-w-7xl mx-auto py-10'>
+    <h1 class='text-3xl font-bold text-blue-600 mb-6'>Dashboard do Administrador</h1>
+
+    <!-- Cards com Informações -->
+    <div class='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
+
+      <!-- Quantidade de Alunos -->
+      <div class='bg-white shadow-lg rounded-lg p-6'>
+        <h2 class='text-xl font-bold text-gray-700'>Alunos</h2>
+        <p class='text-5xl font-semibold text-blue-600 mt-4'>{{totalAlunos}}</p>
+        <p class='text-gray-500 mt-2'>Total de alunos registrados</p>
+      </div>
+
+      <!-- Quantidade de Monitores -->
+      <div class='bg-white shadow-lg rounded-lg p-6'>
+        <h2 class='text-xl font-bold text-gray-700'>Monitores</h2>
+        <p
+          class='text-5xl font-semibold text-blue-600 mt-4'
+        >{{totalMonitores}}</p>
+        <p class='text-gray-500 mt-2'>Total de monitores registrados</p>
+      </div>
+
+      <!-- Quantidade de Administradores -->
+      <div class='bg-white shadow-lg rounded-lg p-6'>
+        <h2 class='text-xl font-bold text-gray-700'>Administradores</h2>
+        <p
+          class='text-5xl font-semibold text-blue-600 mt-4'
+        >{{totalAdministradores}}</p>
+        <p class='text-gray-500 mt-2'>Total de administradores registrados</p>
+      </div>
+    </div>
+
+    <!-- Seção de Ações do Administrador -->
+    <div class='mt-10'>
+      <h2 class='text-2xl font-bold mb-4'>Ações Rápidas</h2>
+      <div class='flex flex-wrap space-x-4'>
+        <a
+          href='/admin/usuarios'
+          class='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
+        >Gerenciar Usuários</a>
+        <a
+          href='/admin/tutores'
+          class='bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded'
+        >Gerenciar Tutores</a>
+        <a
+          href='/admin/relatorios'
+          class='bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded'
+        >Visualizar Relatórios</a>
+      </div>
+    </div>
+
+  </div>
+</div>

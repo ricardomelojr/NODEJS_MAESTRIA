@@ -5,6 +5,7 @@ import flash from 'connect-flash';
 import cookieParser from 'cookie-parser';
 import exphbs from 'express-handlebars';
 import { fileURLToPath } from 'url';
+import handlebarsLayouts from 'handlebars-layouts'; // Adiciona handlebars-layouts
 
 // Importação do Sequelize e da conexão com o banco de dados
 import { sequelize } from './config/database.js'; // Importa a configuração do banco de dados
@@ -26,7 +27,34 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Configurando Handlebars como template engine
-app.engine('handlebars', exphbs.engine());
+const hbs = exphbs.create({
+  layoutsDir: path.join(__dirname, 'views/layouts'), // Diretório de layouts
+  partialsDir: path.join(__dirname, 'views/partials'), // Diretório de partials
+  defaultLayout: 'main', // Define o layout padrão (main.handlebars)
+  helpers: {
+    ifCond: function (v1, operator, v2, options) {
+      switch (operator) {
+        case '==':
+          return v1 == v2 ? options.fn(this) : options.inverse(this);
+        case '===':
+          return v1 === v2 ? options.fn(this) : options.inverse(this);
+        case '!=':
+          return v1 != v2 ? options.fn(this) : options.inverse(this);
+        case '!==':
+          return v1 !== v2 ? options.fn(this) : options.inverse(this);
+        default:
+          return options.inverse(this);
+      }
+    },
+  },
+  // Adicionando as opções de runtime para permitir o acesso a propriedades de protótipos
+  runtimeOptions: {
+    allowProtoPropertiesByDefault: true,
+    allowProtoMethodsByDefault: true,
+  },
+});
+
+app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
 app.set('views', path.join(__dirname, 'views'));
 
@@ -38,12 +66,12 @@ app.use(cookieParser());
 // Configurando as sessões para durar 30 minutos
 app.use(
   session({
-    secret: 'segredo_super_secreto', // Utilize um segredo mais forte em produção
+    secret: 'segredo_super_secreto',
     resave: false,
     saveUninitialized: false,
     cookie: {
       secure: false, // Mude para `true` em produção com HTTPS
-      maxAge: 30 * 60 * 1000, // 30 minutos em milissegundos (30 * 60 * 1000 = 1.800.000 ms)
+      maxAge: 30 * 60 * 1000, // 30 minutos
     },
   })
 );
@@ -51,10 +79,11 @@ app.use(
 // Flash messages
 app.use(flash());
 
-// Middleware global para disponibilizar as mensagens de flash para todas as views
+// Middleware global para disponibilizar as mensagens de flash e o usuário logado para todas as views
 app.use((req, res, next) => {
   res.locals.success_msg = req.flash('success_msg');
   res.locals.error_msg = req.flash('error_msg');
+  res.locals.user = req.session.user || null; // Disponibiliza o usuário logado para as views, se houver
   next();
 });
 
@@ -67,7 +96,7 @@ app.use('/aluno', alunoRoutes);
 app.use('/tutor', tutorRoutes);
 app.use('/appointment', appointmentRoutes);
 app.use('/availability', availabilityRoutes);
-app.use('/', authRoutes);
+app.use('/auth', authRoutes);
 
 app.get('/', (req, res) => {
   res.render('home');
@@ -75,7 +104,7 @@ app.get('/', (req, res) => {
 
 // Sincronizar o banco de dados com os models
 sequelize
-  .sync({ force: false }) // Sincroniza os models sem apagar as tabelas existentes
+  .sync({ force: false })
   .then(() => {
     console.log('Banco de dados sincronizado com sucesso');
   })

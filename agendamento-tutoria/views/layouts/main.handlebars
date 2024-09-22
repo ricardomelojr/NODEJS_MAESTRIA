@@ -5,100 +5,126 @@
     <link rel='stylesheet' href='/css/output.css' />
     <title>{{title}}</title>
   </head>
-  <body class='bg-gray-100'>
-    <!-- Navbar -->
-    <nav class='bg-blue-600 text-white py-4'>
-      <div class='max-w-7xl mx-auto px-4 flex justify-between items-center'>
-        <!-- Logo -->
-        <a href='/' class='text-2xl font-bold text-white'>
-          Sistema de Tutoria
-        </a>
+  <body class='bg-[#E9F1FA]'>
+    <!-- Condição para mostrar a Navbar se o usuário não estiver logado -->
+    {{#if user}}
+      <!-- Menu Lateral (Sidebar) para Usuários Logados -->
+      <div class='flex'>
+        <!-- Sidebar -->
+        <nav class='bg-[#00ABE4] text-white w-1/4 h-screen'>
+          <ul class='space-y-4 p-6'>
+            <!-- Redireciona o Dashboard de acordo com o role -->
+            {{#ifCond user.role '==' 'Aluno'}}
+              <li><a
+                  href='/aluno/dashboard'
+                  class='hover:text-[#E9F1FA]'
+                >Dashboard</a></li>
+              <li><a
+                  href='/aluno/disciplinas'
+                  class='hover:text-[#E9F1FA]'
+                >Disciplinas</a></li>
+              <li><a href='/aluno/agendar' class='hover:text-[#E9F1FA]'>Agendar
+                  Tutoria</a></li>
+              <li><a
+                  href='/aluno/historico'
+                  class='hover:text-[#E9F1FA]'
+                >Histórico de Agendamentos</a></li>
+              <li><a href='/aluno/avaliar' class='hover:text-[#E9F1FA]'>Avaliar
+                  Tutores</a></li>
 
-        <!-- Links de navegação desktop -->
-        <div class='hidden md:flex space-x-6'>
-          <a href='/' class='hover:text-gray-200 text-white'>Home</a>
-          <a href='/about' class='hover:text-gray-200 text-white'>Sobre</a>
-          <a href='/tutors' class='hover:text-gray-200 text-white'>Tutores</a>
-          <a href='/contact' class='hover:text-gray-200 text-white'>Contato</a>
-        </div>
+            {{else ifCond user.role '==' 'Monitor'}}
+              <li><a
+                  href='/tutor/dashboard'
+                  class='hover:text-[#E9F1FA]'
+                >Dashboard</a></li>
+              <li><a
+                  href='/tutor/agendamentos'
+                  class='hover:text-[#E9F1FA]'
+                >Meus Agendamentos</a></li>
+              <li><a
+                  href='/tutor/disponibilidade'
+                  class='hover:text-[#E9F1FA]'
+                >Disponibilidade</a></li>
 
-        <!-- Botão de menu mobile -->
-        <div class='md:hidden'>
-          <button id='menu-btn' class='text-white focus:outline-none'>
-            <svg
-              xmlns='http://www.w3.org/2000/svg'
-              class='h-6 w-6'
-              fill='none'
-              viewBox='0 0 24 24'
-              stroke='currentColor'
-            >
-              <path
-                stroke-linecap='round'
-                stroke-linejoin='round'
-                stroke-width='2'
-                d='M4 6h16M4 12h16m-7 6h7'
-              />
-            </svg>
-          </button>
-        </div>
+            {{else ifCond user.role '==' 'Administrador'}}
+              <li><a
+                  href='/admin/dashboard'
+                  class='hover:text-[#E9F1FA]'
+                >Dashboard</a></li>
+              <li><a
+                  href='/admin/usuarios'
+                  class='hover:text-[#E9F1FA]'
+                >Gerenciar Usuários</a></li>
+              <li><a
+                  href='/admin/tutores'
+                  class='hover:text-[#E9F1FA]'
+                >Gerenciar Tutores</a></li>
+              <li><a
+                  href='/admin/relatorios'
+                  class='hover:text-[#E9F1FA]'
+                >Relatórios</a></li>
+            {{/ifCond}}
+
+            <li><a
+                href='/auth/logout'
+                class='hover:text-[#E9F1FA]'
+              >Logout</a></li>
+          </ul>
+        </nav>
+
+        <!-- Conteúdo da Página -->
+        <main class='flex-1 p-8'>
+          <div class='max-w-7xl mx-auto'>
+            {{{body}}}
+          </div>
+        </main>
       </div>
 
-      <!-- Menu Mobile -->
-      <div id='menu' class='hidden md:hidden'>
-        <a
-          href='/'
-          class='block py-2 px-4 text-sm hover:bg-blue-700 text-white'
-        >Home</a>
-        <a
-          href='/about'
-          class='block py-2 px-4 text-sm hover:bg-blue-700 text-white'
-        >Sobre</a>
-        <a
-          href='/tutors'
-          class='block py-2 px-4 text-sm hover:bg-blue-700 text-white'
-        >Tutores</a>
-        <a
-          href='/contact'
-          class='block py-2 px-4 text-sm hover:bg-blue-700 text-white'
-        >Contato</a>
+    {{else}}
+      <!-- Navbar para Visitantes (não logados) -->
+      <nav class='bg-[#00ABE4] text-white py-4'>
+        <div class='max-w-7xl mx-auto px-4 flex justify-between items-center'>
+          <!-- Logo -->
+          <a href='/' class='text-2xl font-bold text-white'>Sistema de Tutoria</a>
+
+          <!-- Menu -->
+          <div class='space-x-6'>
+            <a href='/auth/login' class='hover:text-[#E9F1FA]'>Login</a>
+            <a
+              href='/auth/register'
+              class='hover:text-[#E9F1FA]'
+            >Registrar-se</a>
+          </div>
+        </div>
+      </nav>
+
+      <!-- Exibição das mensagens -->
+      <div class='max-w-7xl mx-auto px-4 py-4'>
+        {{#if success_msg}}
+          <div
+            class='bg-[#E9F1FA] border border-green-400 text-green-700 px-4 py-3 rounded relative'
+          >
+            {{success_msg}}
+          </div>
+        {{/if}}
+
+        {{#if error_msg}}
+          <div
+            class='bg-[#E9F1FA] border border-red-400 text-red-700 px-4 py-3 rounded relative'
+          >
+            {{error_msg}}
+          </div>
+        {{/if}}
       </div>
-    </nav>
 
-    <!-- Exibição das mensagens -->
-    <div class='max-w-7xl mx-auto px-4 py-4'>
-      {{#if success_msg}}
-        <div
-          class='bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative'
-          role='alert'
-        >
-          <strong class='font-bold'>Sucesso: </strong>
-          <span class='block sm:inline'>{{success_msg}}</span>
+      <!-- Conteúdo da Página -->
+      <main class='py-8'>
+        <div class='max-w-7xl mx-auto px-4'>
+          {{{body}}}
         </div>
-      {{/if}}
-
-      {{#if error_msg}}
-        <div
-          class='bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative'
-          role='alert'
-        >
-          <strong class='font-bold'>Erro: </strong>
-          <span class='block sm:inline'>{{error_msg}}</span>
-        </div>
-      {{/if}}
-    </div>
+      </main>
+    {{/if}}
 
     <!-- Conteúdo da Página -->
-    <main class='py-8'>
-      <div class='max-w-7xl mx-auto px-4'>
-        {{{body}}}
-      </div>
-    </main>
-
-    <!-- Script para funcionalidade do menu mobile -->
-    <script>
-      const menuBtn = document.getElementById('menu-btn'); const menu =
-      document.getElementById('menu'); menuBtn.addEventListener('click', () => {
-      menu.classList.toggle('hidden'); });
-    </script>
   </body>
 </html>

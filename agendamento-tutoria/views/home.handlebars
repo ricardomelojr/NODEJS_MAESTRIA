@@ -1,62 +1,66 @@
-<div
-  class='bg-gradient-to-r from-blue-500 to-indigo-600 min-h-screen flex items-center justify-center'
->
-  <div class='bg-white shadow-lg rounded-lg p-8 max-w-md w-full'>
-    <h1 class='text-3xl font-bold text-center text-gray-800 mb-6'>Sistema de
-      Tutoria</h1>
-    <p class='text-gray-500 text-center mb-8'>Faça login para acessar sua conta</p>
-
-    <form action='/login' method='POST' class='space-y-6'>
-      <div>
-        <label
-          for='email'
-          class='block text-sm font-medium text-gray-700'
-        >Email</label>
-        <input
-          type='email'
-          id='email'
-          name='email'
-          required
-          class='w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-400'
-        />
+<html lang='pt-br'>
+  <head>
+    <meta charset='UTF-8' />
+    <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+    <link rel='stylesheet' href='/css/output.css' />
+    <title>Sistema de Tutoria</title>
+  </head>
+  <body class='bg-[#E9F1FA]'>
+    <!-- Seção de Introdução -->
+    <header class='bg-[#00ABE4] text-white py-12'>
+      <div class='max-w-7xl mx-auto text-center'>
+        <h1 class='text-4xl font-bold'>Bem-vindo ao Sistema de Tutoria</h1>
+        <p class='mt-4 text-lg'>Melhore seu desempenho com a ajuda dos melhores
+          tutores.</p>
+        <a
+          href='/auth/register'
+          class='mt-6 inline-block bg-white text-[#00ABE4] font-semibold py-2 px-6 rounded-full hover:bg-[#E9F1FA]'
+        >
+          Registrar-se Agora
+        </a>
       </div>
+    </header>
 
-      <div>
-        <label
-          for='password'
-          class='block text-sm font-medium text-gray-700'
-        >Senha</label>
-        <input
-          type='password'
-          id='password'
-          name='password'
-          required
-          class='w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-400'
-        />
+    <!-- Seção sobre os Benefícios -->
+    <section class='py-12'>
+      <div class='max-w-7xl mx-auto px-4 text-center'>
+        <h2 class='text-3xl font-bold mb-6 text-gray-900'>Por que usar nosso
+          sistema de tutoria?</h2>
+        <div
+          class='flex flex-col md:flex-row justify-center space-y-6 md:space-y-0 md:space-x-8'
+        >
+          <div class='bg-white shadow-lg p-6 rounded-lg w-full md:w-1/3'>
+            <h3 class='text-xl font-bold text-[#00ABE4]'>Tutoria Personalizada</h3>
+            <p class='mt-4 text-gray-600'>Receba suporte individualizado de
+              tutores qualificados em várias disciplinas.</p>
+          </div>
+          <div class='bg-white shadow-lg p-6 rounded-lg w-full md:w-1/3'>
+            <h3 class='text-xl font-bold text-[#00ABE4]'>Agendamentos Flexíveis</h3>
+            <p class='mt-4 text-gray-600'>Agende sessões nos horários que melhor
+              se encaixam no seu calendário.</p>
+          </div>
+          <div class='bg-white shadow-lg p-6 rounded-lg w-full md:w-1/3'>
+            <h3 class='text-xl font-bold text-[#00ABE4]'>Acompanhe seu Progresso</h3>
+            <p class='mt-4 text-gray-600'>Monitore seu desempenho e avalie seus
+              tutores após cada sessão.</p>
+          </div>
+        </div>
       </div>
+    </section>
 
-      <div class='flex items-center justify-between'>
-        <label class='inline-flex items-center'>
-          <input
-            type='checkbox'
-            class='form-checkbox h-5 w-5 text-indigo-600'
-          />
-          <span class='ml-2 text-gray-700'>Lembrar-me</span>
-        </label>
-        <a href='#' class='text-sm text-indigo-600 hover:underline'>Esqueceu a
-          senha?</a>
+    <!-- Seção de Chamada para Ação -->
+    <section class='bg-[#00ABE4] text-white py-12'>
+      <div class='max-w-7xl mx-auto text-center'>
+        <h2 class='text-3xl font-bold'>Pronto para começar?</h2>
+        <p class='mt-4'>Cadastre-se e comece a agendar suas sessões de tutoria
+          agora mesmo.</p>
+        <a
+          href='/auth/register'
+          class='mt-6 inline-block bg-white text-[#00ABE4] font-semibold py-2 px-6 rounded-full hover:bg-[#E9F1FA]'
+        >
+          Registrar-se
+        </a>
       </div>
-
-      <button
-        type='submit'
-        class='w-full bg-indigo-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-400'
-      >Entrar</button>
-    </form>
-
-    <p class='text-center text-gray-500 mt-8'>Não tem uma conta?
-      <a
-        href='/register'
-        class='text-indigo-600 hover:underline'
-      >Registre-se</a></p>
-  </div>
-</div>
+    </section>
+  </body>
+</html>

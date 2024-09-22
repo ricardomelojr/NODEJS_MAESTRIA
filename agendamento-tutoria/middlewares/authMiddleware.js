@@ -1,78 +1,49 @@
-// Middleware para verificar se o usuário é um Aluno
+// Função auxiliar para redirecionar o usuário com base no seu papel (role)
+const redirectToDashboard = (role, res) => {
+  if (role === 'Aluno') {
+    return res.redirect('/aluno/dashboard');
+  } else if (role === 'Monitor') {
+    return res.redirect('/tutor/dashboard');
+  } else if (role === 'Administrador') {
+    return res.redirect('/admin/dashboard');
+  }
+};
+
+// Função para verificar se o usuário está autenticado
+const isAuthenticated = (req, res, next) => {
+  if (!req.session.user) {
+    req.flash(
+      'error_msg',
+      'Você precisa estar logado para acessar esta página.'
+    );
+    return res.redirect('/');
+  }
+  next();
+};
+
+// Middleware para garantir que o usuário é um Aluno
 export const ensureAluno = (req, res, next) => {
-  if (!req.session.user) {
-    // Se o usuário não estiver autenticado, redireciona para a Home
-    req.flash(
-      'error_msg',
-      'Você precisa estar logado para acessar esta página.'
-    );
-    return res.redirect('/');
-  }
-
   if (req.session.user.role === 'Aluno') {
-    return next(); // O usuário é um Aluno, permite o acesso
-  } else if (req.session.user.role === 'Monitor') {
-    // Se o usuário for Monitor, redireciona para a rota de Monitor
-    return res.redirect('/tutor/dashboard');
-  } else if (req.session.user.role === 'Administrador') {
-    // Se o usuário for Administrador, redireciona para a rota de Admin
-    return res.redirect('/admin/dashboard');
+    return next(); // Permite o acesso para Aluno
   }
+  return redirectToDashboard(req.session.user.role, res); // Redireciona se não for Aluno
 };
 
-// Middleware para verificar se o usuário é um Monitor
+// Middleware para garantir que o usuário é um Monitor
 export const ensureMonitor = (req, res, next) => {
-  if (!req.session.user) {
-    // Se o usuário não estiver autenticado, redireciona para a Home
-    req.flash(
-      'error_msg',
-      'Você precisa estar logado para acessar esta página.'
-    );
-    return res.redirect('/');
-  }
-
   if (req.session.user.role === 'Monitor') {
-    return next(); // O usuário é um Monitor, permite o acesso
-  } else if (req.session.user.role === 'Aluno') {
-    // Se o usuário for Aluno, redireciona para a rota de Aluno
-    return res.redirect('/aluno/dashboard');
-  } else if (req.session.user.role === 'Administrador') {
-    // Se o usuário for Administrador, redireciona para a rota de Admin
-    return res.redirect('/admin/dashboard');
+    return next(); // Permite o acesso para Monitor
   }
+  return redirectToDashboard(req.session.user.role, res); // Redireciona se não for Monitor
 };
 
-// Middleware para verificar se o usuário é um Administrador
+// Middleware para garantir que o usuário é um Administrador
 export const ensureAdmin = (req, res, next) => {
-  if (!req.session.user) {
-    // Se o usuário não estiver autenticado, redireciona para a Home
-    req.flash(
-      'error_msg',
-      'Você precisa estar logado para acessar esta página.'
-    );
-    return res.redirect('/');
-  }
-
   if (req.session.user.role === 'Administrador') {
-    return next(); // O usuário é um Administrador, permite o acesso
-  } else if (req.session.user.role === 'Aluno') {
-    // Se o usuário for Aluno, redireciona para a rota de Aluno
-    return res.redirect('/aluno/dashboard');
-  } else if (req.session.user.role === 'Monitor') {
-    // Se o usuário for Monitor, redireciona para a rota de Monitor
-    return res.redirect('/tutor/dashboard');
+    return next(); // Permite o acesso para Administrador
   }
+  return redirectToDashboard(req.session.user.role, res); // Redireciona se não for Administrador
 };
 
-// Middleware para verificar se o usuário está autenticado
-export const ensureAuthenticated = (req, res, next) => {
-  if (req.session.user) {
-    return next(); // O usuário está autenticado, permite o acesso
-  } else {
-    req.flash(
-      'error_msg',
-      'Você precisa estar logado para acessar esta página.'
-    );
-    return res.redirect('/'); // Redireciona para a Home (página de login)
-  }
-};
+// Middleware geral para verificar se o usuário está autenticado
+export const ensureAuthenticated = isAuthenticated;

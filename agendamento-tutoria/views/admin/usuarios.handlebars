@@ -1,0 +1,65 @@
+<div class="flex justify-center min-h-screen bg-gray-100">
+  <div class="w-full max-w-7xl bg-white shadow-md rounded-lg p-8">
+    <h1 class="text-3xl font-bold text-center mb-8 text-blue-600">Gerenciar Usuários</h1>
+
+    <!-- Formulário de busca e filtro -->
+    <form method="GET" action="/admin/usuarios" class="mb-6 flex justify-between">
+      <input
+        type="text"
+        name="search"
+        value="{{search}}"
+        placeholder="Buscar por nome"
+        class="border p-2 rounded w-full md:w-1/2 mr-4"
+      />
+      <select name="roleFilter" class="border p-2 rounded w-full md:w-1/4">
+        <option value="">Filtrar por Role</option>
+        <option value="Aluno" {{#ifCond roleFilter '==' 'Aluno'}}selected{{/ifCond}}>Aluno</option>
+        <option value="Monitor" {{#ifCond roleFilter '==' 'Monitor'}}selected{{/ifCond}}>Monitor</option>
+        <option value="Administrador" {{#ifCond roleFilter '==' 'Administrador'}}selected{{/ifCond}}>Administrador</option>
+      </select>
+      <button type="submit" class="bg-blue-500 text-white font-bold py-2 px-4 rounded">Filtrar</button>
+    </form>
+
+    {{#if success_msg}}
+      <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
+        {{success_msg}}
+      </div>
+    {{/if}}
+
+    {{#if error_msg}}
+      <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+        {{error_msg}}
+      </div>
+    {{/if}}
+
+    <div class="overflow-x-auto">
+      <table class="table-auto w-full text-left">
+        <thead>
+          <tr class="bg-gray-200 text-gray-700">
+            <th class="px-4 py-2">Nome</th>
+            <th class="px-4 py-2">Email</th>
+            <th class="px-4 py-2">Role Atual</th>
+            <th class="px-4 py-2">Disciplina</th>
+            <th class="px-4 py-2">Ação</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each usuarios}}
+            <tr class="border-b">
+              <td class="px-4 py-4">{{this.name}}</td>
+              <td class="px-4 py-4">{{this.email}}</td>
+              <td class="px-4 py-4">{{this.role}}</td>
+              <td class="px-4 py-4">{{this.subject}}</td>
+              <td class="px-4 py-4">
+                <a href="/admin/usuarios/{{this.id}}/editar" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded mr-2">Editar</a>
+                <form action="/admin/usuarios/{{this.id}}/excluir" method="POST" class="inline-block">
+                  <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Excluir</button>
+                </form>
+              </td>
+            </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

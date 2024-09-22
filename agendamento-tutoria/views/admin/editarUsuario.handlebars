@@ -1,0 +1,181 @@
+<div class="flex justify-center min-h-screen bg-gray-100">
+  <div class="w-full max-w-lg bg-white shadow-md rounded-lg p-8">
+    <h1 class="text-3xl font-bold text-center mb-8 text-blue-600">Editar Usuário</h1>
+
+    {{#if error_msg}}
+      <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+        {{error_msg}}
+      </div>
+    {{/if}}
+
+    <form action="/admin/usuarios/{{usuario.id}}/editar" method="POST">
+      <!-- Nome -->
+      <div class="mb-4">
+        <label for="name" class="block text-gray-700">Nome</label>
+        <input type="text" id="name" name="name" value="{{usuario.name}}" class="w-full p-2 border rounded" required />
+      </div>
+
+      <!-- Email -->
+      <div class="mb-4">
+        <label for="email" class="block text-gray-700">Email</label>
+        <input type="email" id="email" name="email" value="{{usuario.email}}" class="w-full p-2 border rounded" required />
+      </div>
+
+      <!-- Role -->
+      <div class="mb-4">
+        <label for="role" class="block text-gray-700">Role</label>
+        <select id="role" name="role" class="w-full p-2 border rounded">
+          <option value="Aluno" {{#ifCond usuario.role '==' 'Aluno'}}selected{{/ifCond}}>Aluno</option>
+          <option value="Monitor" {{#ifCond usuario.role '==' 'Monitor'}}selected{{/ifCond}}>Monitor</option>
+          <option value="Administrador" {{#ifCond usuario.role '==' 'Administrador'}}selected{{/ifCond}}>Administrador</option>
+        </select>
+      </div>
+
+      <!-- Disciplina -->
+      <div class="mb-4">
+        <label for="subject" class="block text-gray-700">Disciplina</label>
+        <input type="text" id="subject" name="subject" value="{{usuario.subject}}" class="w-full p-2 border rounded" />
+      </div>
+
+      <!-- Disponibilidade (somente para Monitor) -->
+      <div id="availabilityFields" class="hidden">
+        <h2 class="text-xl font-bold mb-4 text-blue-600">Disponibilidade de Tutoria</h2>
+        
+        <!-- Dias da Semana com Horários -->
+        <div id="availabilityContainer">
+          <!-- Segunda-feira -->
+          <div class="mb-4">
+            <input type="checkbox" id="monday" name="mondayEnabled">
+            <label for="monday" class="text-gray-700">Segunda-feira</label>
+            <div class="flex justify-between space-x-2 mt-2">
+              <div class="w-1/2">
+                <label for="mondayStart" class="block text-gray-700">Início</label>
+                <input type="time" id="mondayStart" name="mondayStart" class="w-full p-2 border rounded" disabled />
+              </div>
+              <div class="w-1/2">
+                <label for="mondayEnd" class="block text-gray-700">Término</label>
+                <input type="time" id="mondayEnd" name="mondayEnd" class="w-full p-2 border rounded" disabled />
+              </div>
+            </div>
+          </div>
+
+          <!-- Terça-feira -->
+          <div class="mb-4">
+            <input type="checkbox" id="tuesday" name="tuesdayEnabled">
+            <label for="tuesday" class="text-gray-700">Terça-feira</label>
+            <div class="flex justify-between space-x-2 mt-2">
+              <div class="w-1/2">
+                <label for="tuesdayStart" class="block text-gray-700">Início</label>
+                <input type="time" id="tuesdayStart" name="tuesdayStart" class="w-full p-2 border rounded" disabled />
+              </div>
+              <div class="w-1/2">
+                <label for="tuesdayEnd" class="block text-gray-700">Término</label>
+                <input type="time" id="tuesdayEnd" name="tuesdayEnd" class="w-full p-2 border rounded" disabled />
+              </div>
+            </div>
+          </div>
+
+          <!-- Quarta-feira -->
+          <div class="mb-4">
+            <input type="checkbox" id="wednesday" name="wednesdayEnabled">
+            <label for="wednesday" class="text-gray-700">Quarta-feira</label>
+            <div class="flex justify-between space-x-2 mt-2">
+              <div class="w-1/2">
+                <label for="wednesdayStart" class="block text-gray-700">Início</label>
+                <input type="time" id="wednesdayStart" name="wednesdayStart" class="w-full p-2 border rounded" disabled />
+              </div>
+              <div class="w-1/2">
+                <label for="wednesdayEnd" class="block text-gray-700">Término</label>
+                <input type="time" id="wednesdayEnd" name="wednesdayEnd" class="w-full p-2 border rounded" disabled />
+              </div>
+            </div>
+          </div>
+
+          <!-- Quinta-feira -->
+          <div class="mb-4">
+            <input type="checkbox" id="thursday" name="thursdayEnabled">
+            <label for="thursday" class="text-gray-700">Quinta-feira</label>
+            <div class="flex justify-between space-x-2 mt-2">
+              <div class="w-1/2">
+                <label for="thursdayStart" class="block text-gray-700">Início</label>
+                <input type="time" id="thursdayStart" name="thursdayStart" class="w-full p-2 border rounded" disabled />
+              </div>
+              <div class="w-1/2">
+                <label for="thursdayEnd" class="block text-gray-700">Término</label>
+                <input type="time" id="thursdayEnd" name="thursdayEnd" class="w-full p-2 border rounded" disabled />
+              </div>
+            </div>
+          </div>
+
+          <!-- Sexta-feira -->
+          <div class="mb-4">
+            <input type="checkbox" id="friday" name="fridayEnabled">
+            <label for="friday" class="text-gray-700">Sexta-feira</label>
+            <div class="flex justify-between space-x-2 mt-2">
+              <div class="w-1/2">
+                <label for="fridayStart" class="block text-gray-700">Início</label>
+                <input type="time" id="fridayStart" name="fridayStart" class="w-full p-2 border rounded" disabled />
+              </div>
+              <div class="w-1/2">
+                <label for="fridayEnd" class="block text-gray-700">Término</label>
+                <input type="time" id="fridayEnd" name="fridayEnd" class="w-full p-2 border rounded" disabled />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Botão Salvar -->
+      <div class="text-center mt-6">
+        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Salvar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- JavaScript para ativar/desativar os campos de horário quando o dia for selecionado -->
+<script>
+  document.getElementById('role').addEventListener('change', function () {
+    const availabilityFields = document.getElementById('availabilityFields');
+    if (this.value === 'Monitor') {
+      availabilityFields.classList.remove('hidden');
+    } else {
+      availabilityFields.classList.add('hidden');
+    }
+  });
+
+  // Ativa ou desativa os campos de horário baseados no checkbox
+  const checkboxes = document.querySelectorAll('input[type="checkbox"][name$="Enabled"]');
+  checkboxes.forEach(checkbox => {
+    checkbox.addEventListener('change', function () {
+      const startTime = document.querySelector(`input[name="${checkbox.name.replace('Enabled', 'Start')}"]`);
+      const endTime = document.querySelector(`input[name="${checkbox.name.replace('Enabled', 'End')}"]`);
+      if (checkbox.checked) {
+        startTime.disabled = false;
+        endTime.disabled = false;
+      } else {
+        startTime.disabled = true;
+        endTime.disabled = true;
+      }
+    });
+  });
+
+  // Exibe os campos de disponibilidade se o usuário já for Monitor
+  window.onload = function () {
+    const roleSelect = document.getElementById('role');
+    const availabilityFields = document.getElementById('availabilityFields');
+    if (roleSelect.value === 'Monitor') {
+      availabilityFields.classList.remove('hidden');
+    }
+
+    // Ativar os horários automaticamente se os dias estiverem selecionados
+    checkboxes.forEach(checkbox => {
+      const startTime = document.querySelector(`input[name="${checkbox.name.replace('Enabled', 'Start')}"]`);
+      const endTime = document.querySelector(`input[name="${checkbox.name.replace('Enabled', 'End')}"]`);
+      if (checkbox.checked) {
+        startTime.disabled = false;
+        endTime.disabled = false;
+      }
+    });
+  };
+</script>

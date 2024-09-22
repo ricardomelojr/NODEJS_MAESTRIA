@@ -5,10 +5,9 @@ import AlunoController from '../controllers/alunoController.js';
 import {
   ensureAluno,
   ensureAuthenticated,
-} from '../middlewares/authMiddleware.js'; // Importa o middleware
+} from '../middlewares/authMiddleware.js';
 
-/* GET */
-// Aplica o middleware ensureAluno e ensureAuthenticated nas rotas de aluno
+// Rota protegida para Aluno
 router.get(
   '/dashboard',
   ensureAuthenticated,
