@@ -1,6 +1,6 @@
 import { Op } from 'sequelize'; // Para operações avançadas de busca
 import User from '../models/User.js';
-import Availability from '../models/Availability.js'; // Modelo de Disponibilidade
+/* import Availability from '../models/Availability.js'; // Modelo de Disponibilidade */
 import bcrypt from 'bcryptjs'; // Para lidar com a alteração de senha
 
 export default class AdminController {

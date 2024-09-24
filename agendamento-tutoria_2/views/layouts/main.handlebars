@@ -7,40 +7,111 @@
     
     <!-- Tailwind CSS -->
     <link href="/css/output.css" rel="stylesheet" />
-  </head>
-  <body class="bg-gray-100">
 
-    <!-- Header -->
+    <!-- CSS do Snackbar -->
+    <style>
+      /* CSS para o Snackbar */
+      #snackbar {
+        visibility: hidden;
+        min-width: 250px;
+        margin-left: -125px;
+        text-align: center;
+        border-radius: 5px;
+        padding: 16px;
+        position: fixed;
+        z-index: 1;
+        left: 50%;
+        bottom: 30px;
+        font-size: 17px;
+      }
+
+      /* Cor para mensagens de sucesso */
+      #snackbar.success {
+        background-color: #4CAF50; /* Verde para sucesso */
+        color: #fff;
+      }
+
+      /* Cor para mensagens de erro */
+      #snackbar.error {
+        background-color: #f44336; /* Vermelho para erro */
+        color: #fff;
+      }
+
+      #snackbar.show {
+        visibility: visible;
+        -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+        animation: fadein 0.5s, fadeout 0.5s 2.5s;
+      }
+
+      @-webkit-keyframes fadein {
+        from {bottom: 0; opacity: 0;} 
+        to {bottom: 30px; opacity: 1;}
+      }
+
+      @keyframes fadein {
+        from {bottom: 0; opacity: 0;}
+        to {bottom: 30px; opacity: 1;}
+      }
+
+      @-webkit-keyframes fadeout {
+        from {bottom: 30px; opacity: 1;} 
+        to {bottom: 0; opacity: 0;}
+      }
+
+      @keyframes fadeout {
+        from {bottom: 30px; opacity: 1;}
+        to {bottom: 0; opacity: 0;}
+      }
+    </style>
+  </head>
+  <body class="bg-gray-100 flex">
+
+    <!-- Inclui o header, que carrega o navbar ou o menu lateral -->
     {{> header}}
 
-    <!-- Mensagens Flash -->
-    <div class="container mx-auto mt-4">
-      {{#if success_msg}}
-        <div class="bg-green-500 text-white p-4 rounded mb-4">
-          {{success_msg}}
-        </div>
-      {{/if}}
-
-      {{#if error_msg}}
-        <div class="bg-red-500 text-white p-4 rounded mb-4">
-          {{error_msg}}
-        </div>
-      {{/if}}
-
-      {{#if error}}
-        <div class="bg-red-500 text-white p-4 rounded mb-4">
-          {{error}}
-        </div>
-      {{/if}}
+    <!-- Conteúdo principal -->
+    <div class="flex-1 p-8 ml-64">
+      <!-- Conteúdo dinâmico -->
+      {{{body}}}
     </div>
 
-    <!-- Conteúdo principal -->
-    <main class="container mx-auto p-8">
-      {{{body}}}
-    </main>
+    <!-- Snackbar -->
+    <div id="snackbar"></div>
 
-    <!-- Footer -->
-    {{> footer}}
+    <!-- Script para exibir o Snackbar -->
+    <script>
+      // Função para exibir o Snackbar com a mensagem e o tipo (sucesso ou erro)
+      function showSnackbar(message, type) {
+        const snackbar = document.getElementById("snackbar");
+        snackbar.innerText = message;
+
+        // Define a cor do snackbar de acordo com o tipo de mensagem
+        if (type === 'success') {
+          snackbar.className = "show success";
+        } else if (type === 'error') {
+          snackbar.className = "show error";
+        }
+
+        // Remove a classe após 3 segundos para esconder o snackbar
+        setTimeout(() => {
+          snackbar.className = snackbar.className.replace("show", "");
+        }, 3000);
+      }
+
+      // Verificar se há mensagens flash de sucesso ou erro e exibi-las no Snackbar
+      window.onload = function() {
+        const successMsg = "{{success_msg}}";
+        const errorMsg = "{{error_msg}}";
+
+        if (successMsg) {
+          showSnackbar(successMsg, 'success'); // Exibir snackbar verde para sucesso
+        }
+
+        if (errorMsg) {
+          showSnackbar(errorMsg, 'error'); // Exibir snackbar vermelho para erro
+        }
+      };
+    </script>
     
   </body>
 </html>

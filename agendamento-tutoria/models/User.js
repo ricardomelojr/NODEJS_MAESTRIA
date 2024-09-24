@@ -1,6 +1,6 @@
 import { DataTypes } from 'sequelize';
 import { sequelize } from '../config/database.js';
-import Availability from './Availability.js'; // Importa o modelo Availability
+/* import Availability from './Availability.js'; // Importa o modelo Availability */
 
 const User = sequelize.define('User', {
   name: {
@@ -27,10 +27,10 @@ const User = sequelize.define('User', {
   },
 });
 
-// Defina a associação hasMany entre User e Availability
+/* // Defina a associação hasMany entre User e Availability
 User.hasMany(Availability, {
   foreignKey: 'userId',
   as: 'availabilities',
-});
+}); */
 
 export default User;

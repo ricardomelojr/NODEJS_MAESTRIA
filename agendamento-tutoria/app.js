@@ -17,7 +17,7 @@ import adminRoutes from './routes/adminRoutes.js';
 import alunoRoutes from './routes/alunoRoutes.js';
 import tutorRoutes from './routes/tutorRoutes.js';
 import appointmentRoutes from './routes/appointmentRoutes.js';
-import availabilityRoutes from './routes/availabilityRoutes.js';
+/* import availabilityRoutes from './routes/availabilityRoutes.js'; */
 
 // Inicializando o app
 const app = express();
@@ -95,7 +95,7 @@ app.use('/admin', adminRoutes);
 app.use('/aluno', alunoRoutes);
 app.use('/tutor', tutorRoutes);
 app.use('/appointment', appointmentRoutes);
-app.use('/availability', availabilityRoutes);
+/* app.use('/availability', availabilityRoutes); */
 app.use('/auth', authRoutes);
 
 app.get('/', (req, res) => {

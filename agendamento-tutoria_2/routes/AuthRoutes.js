@@ -1,17 +1,21 @@
 import express from 'express';
-import {
-  showRegisterForm,
-  registerUser,
-} from '../controllers/AuthController.js'; // Ajuste o caminho conforme necessário
+import AuthController from '../controllers/AuthController.js';
 
 const router = express.Router();
 
+// Rota para exibir o formulário de login
+router.get('/login', AuthController.showLoginForm);
+
+// Rota para processar o login
+router.post('/login', AuthController.loginUser);
+
 // Rota para exibir o formulário de registro
-router.get('/register', showRegisterForm);
+router.get('/register', AuthController.showRegisterForm);
 
-// Rota para processar o registro de um novo usuário
-router.post('/register', registerUser);
+// Rota para processar o registro de usuário
+router.post('/register', AuthController.registerUser);
 
-// Outras rotas de autenticação podem ser adicionadas aqui (login, logout, etc.)
+// Rota para logout
+router.get('/logout', AuthController.logoutUser);
 
 export default router;

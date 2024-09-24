@@ -1,4 +1,4 @@
-import { DataTypes } from 'sequelize';
+/* import { DataTypes } from 'sequelize';
 import { sequelize } from '../config/database.js';
 
 const Availability = sequelize.define('Availability', {
@@ -24,3 +24,4 @@ const Availability = sequelize.define('Availability', {
 });
 
 export default Availability;
+ */
