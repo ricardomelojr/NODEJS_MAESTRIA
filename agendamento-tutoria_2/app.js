@@ -1,6 +1,4 @@
-// app.js
-
-// Importações principais
+// Importações Principais
 import express from 'express';
 import exphbs from 'express-handlebars';
 import path from 'path';
@@ -11,25 +9,31 @@ import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 import Handlebars from 'handlebars';
 
-// Importação das rotas e dos modelos
+// Importação das Rotas
 import authRoutes from './routes/AuthRoutes.js';
 import adminRoutes from './routes/AdminRoutes.js';
 import availabilityRoutes from './routes/AvailabilityRoutes.js';
-import studentRoutes from './routes/StudentRoutes.js'; // Importar as rotas dos alunos
-import sequelize from './config/database.js'; // Importar o Sequelize como exportação padrão
-import User from './models/User.js'; // Importar o modelo de User
-import Availability from './models/Availability.js';
-// Carregar variáveis de ambiente
+import studentRoutes from './routes/StudentRoutes.js'; // Rotas dos alunos
+
+// Importação da Configuração do Banco de Dados
+import sequelize from './config/database.js'; // Importa o Sequelize
+
+// Importação dos Modelos (Certifique-se de que os modelos estão sincronizados)
+import './models/User.js';
+import './models/Availability.js';
+import './models/Tutoring.js';
+
+// Carregar Variáveis de Ambiente
 dotenv.config();
 
-// Inicializar o app
+// Inicializar o Aplicativo Express
 const app = express();
 
-// Resolver __dirname e __filename em ES Modules
+// Resolver __dirname e __filename para ES Modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Configurações do Handlebars
+// Configuração do Handlebars
 app.engine(
   'handlebars',
   exphbs.engine({
@@ -45,64 +49,75 @@ app.engine(
 app.set('view engine', 'handlebars');
 app.set('views', path.join(__dirname, 'views'));
 
-// Middlewares essenciais
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
-app.use(express.static(path.join(__dirname, 'public')));
-app.use(cookieParser(process.env.COOKIE_SECRET || 'secret'));
+// Middlewares Essenciais
+app.use(express.urlencoded({ extended: true })); // Para processar formulários
+app.use(express.json()); // Para processar JSON
+app.use(express.static(path.join(__dirname, 'public'))); // Serve arquivos estáticos (CSS, JS)
+app.use(cookieParser(process.env.COOKIE_SECRET || 'secret')); // Para manipular cookies
 
-// Configurar sessão
+// Configurar Sessão e Cookies
 app.use(
   session({
-    secret: process.env.SESSION_SECRET || 'secret', // Usar variável de ambiente para o segredo da sessão
-    resave: false, // Não salvar a sessão novamente se não houver modificações
-    saveUninitialized: true, // Salva uma sessão não modificada (útil para mensagens flash)
+    secret: process.env.SESSION_SECRET || 'secret', // Usar a variável de ambiente para o segredo da sessão
+    resave: false, // Não salvar a sessão se não houver mudanças
+    saveUninitialized: true, // Salva sessões não modificadas
     cookie: {
-      secure: process.env.NODE_ENV === 'production', // Apenas cookies seguros em produção (HTTPS)
+      secure: process.env.NODE_ENV === 'production', // Cookies seguros apenas em produção
       maxAge: 1000 * 60 * 60 * 2, // Sessão expira em 2 horas
     },
   })
 );
 
-// Flash messages (Conectar mensagens flash à sessão)
+// Configurar Flash Messages
 app.use(flash());
 
-// Middleware para adicionar mensagens flash e informações de sessão às views
+// Middleware Global para Passar Variáveis às Views
 app.use((req, res, next) => {
   res.locals.success_msg = req.flash('success_msg');
   res.locals.error_msg = req.flash('error_msg');
   res.locals.error = req.flash('error');
-  res.locals.user = req.session.user || null; // Se o usuário estiver logado, passa as informações para as views
+  res.locals.user = req.session.user || null; // Passa as informações do usuário logado
   next();
 });
 
-// Helper para comparar valores no Handlebars
+// Helpers Handlebars Globais
 Handlebars.registerHelper('eq', function (a, b) {
   return a === b;
 });
 
-// Helper para formatar hora e minuto (sem os segundos)
+// Helper para verificar se o ID de disponibilidade está na lista de inscrições do aluno
+Handlebars.registerHelper('includes', function (array, value) {
+  if (!Array.isArray(array)) {
+    return false; // Se `array` não for uma lista, retorna `false`
+  }
+  return array.includes(Number(value)); // Certifique-se de que estamos comparando números
+});
+
 Handlebars.registerHelper('formatTime', function (time) {
-  if (!time) return ''; // Caso o valor não exista
-  const date = new Date(`1970-01-01T${time}Z`);
+  if (!time) return ''; // Verifica se o valor existe
+  // Criar o objeto Date sem ajustar para UTC
+  const [hours, minutes, seconds] = time.split(':');
+  const date = new Date();
+  date.setHours(parseInt(hours), parseInt(minutes), parseInt(seconds || 0));
+
   return date.toLocaleTimeString('pt-BR', {
     hour: '2-digit',
     minute: '2-digit',
   });
 });
 
-// Rotas principais
+// Rotas Principais
 app.get('/', (req, res) => {
   res.render('home', { title: 'Página Inicial' });
 });
 
-// Rotas específicas (admin e auth)
-app.use('/admin', adminRoutes);
-app.use('/admin/availability', availabilityRoutes);
-app.use('/auth', authRoutes);
-app.use('/student', studentRoutes); // Define as rotas dos alunos
+// Rotas Específicas
+app.use('/admin', adminRoutes); // Rotas para administradores
+app.use('/admin/availability', availabilityRoutes); // Rotas para disponibilidade
+app.use('/auth', authRoutes); // Rotas de autenticação
+app.use('/student', studentRoutes); // Rotas dos alunos
 
-// Sincronizar com o banco de dados e iniciar o servidor
+// Sincronizar o Banco de Dados e Iniciar o Servidor
 sequelize
   .sync()
   .then(() => {

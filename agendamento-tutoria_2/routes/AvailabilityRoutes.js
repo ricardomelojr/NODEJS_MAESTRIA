@@ -10,6 +10,6 @@ router.get('/search', AvailabilityController.searchMonitors);
 router.post('/create', AvailabilityController.createTutoring);
 
 // Rota para listar todas as monitorias
-router.get('/list', AvailabilityController.listTutoring);
+router.get('/', AvailabilityController.listTutoring);
 
 export default router;

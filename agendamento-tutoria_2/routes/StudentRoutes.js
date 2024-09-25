@@ -1,6 +1,6 @@
 import express from 'express';
-import StudentController from '../controllers/StudentController.js'; // Importar o controlador do aluno
-import { ensureAuthenticated } from '../middlewares/authMiddleware.js'; // Verifica se o usuário está autenticado
+import StudentController from '../controllers/StudentController.js';
+import { ensureAuthenticated } from '../middlewares/authMiddleware.js'; // Middleware para verificar autenticação
 
 const router = express.Router();
 
@@ -9,5 +9,11 @@ router.use(ensureAuthenticated);
 
 // Rota para o dashboard do aluno
 router.get('/dashboard', StudentController.dashboard);
+
+// Rota para listar os monitores e suas disponibilidades
+router.get('/tutors', StudentController.tutors);
+
+// Rota para realizar inscrição na monitoria
+router.post('/tutors/register', StudentController.registerTutoring);
 
 export default router;

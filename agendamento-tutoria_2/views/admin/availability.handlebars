@@ -1,0 +1,275 @@
+<div class='flex justify-between items-center mb-4'>
+  <h1 class='text-2xl font-bold'>{{title}}</h1>
+
+  <!-- Botão "Cadastrar Monitoria" -->
+  <button
+    onclick='openModal()'
+    class='bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded'
+  >
+    Cadastrar Monitoria
+  </button>
+</div>
+
+<!-- Filtros -->
+<div class='flex justify-between mb-4'>
+  <input
+    type='text'
+    id='searchMonitor'
+    placeholder='Pesquisar por monitor'
+    class='border px-4 py-2 rounded w-1/3'
+    oninput='filterAvailabilities()'
+  />
+  <input
+    type='text'
+    id='searchSubject'
+    placeholder='Pesquisar por disciplina'
+    class='border px-4 py-2 rounded w-1/3'
+    oninput='filterAvailabilities()'
+  />
+  <select
+    id='dayFilter'
+    class='border px-4 py-2 rounded w-1/3'
+    onchange='filterAvailabilities()'
+  >
+    <option value='Todos'>Todos os dias</option>
+    <option value='Segunda-feira'>Segunda-feira</option>
+    <option value='Terça-feira'>Terça-feira</option>
+    <option value='Quarta-feira'>Quarta-feira</option>
+    <option value='Quinta-feira'>Quinta-feira</option>
+    <option value='Sexta-feira'>Sexta-feira</option>
+  </select>
+</div>
+
+{{#if availabilities.length}}
+  <div class='overflow-x-auto'>
+    <table class='min-w-full bg-white border border-gray-200'>
+      <thead>
+        <tr class='bg-gray-200 text-gray-600 uppercase text-sm leading-normal'>
+          <th class='py-3 px-6 text-left'>Monitor</th>
+          <th class='py-3 px-6 text-left'>Disciplina</th>
+          <th class='py-3 px-6 text-left'>Dia</th>
+          <th class='py-3 px-6 text-left'>Hora Início</th>
+          <th class='py-3 px-6 text-left'>Hora Fim</th>
+          <th class='py-3 px-6 text-center'>Ações</th>
+        </tr>
+      </thead>
+      <tbody
+        id='availabilityTableBody'
+        class='text-gray-600 text-sm font-light'
+      >
+        {{#each availabilities}}
+          <tr
+            class='availability-row border-b border-gray-200 hover:bg-gray-100 
+            {{#if this.Availabilities.length}}bg-green-100{{else}}bg-red-100{{/if}}'
+            data-monitor='{{this.name}}'
+            data-subject='{{#if this.Availabilities.length}}{{this.Availabilities.[0].subject}}{{else}}Nenhuma Disponibilidade{{/if}}'
+            data-day='{{#if this.Availabilities.length}}{{this.Availabilities.[0].day}}{{else}}--{{/if}}'
+          >
+            <td class='py-3 px-6 text-left'>{{this.name}}</td>
+            <td class='py-3 px-6 text-left'>
+              {{#if this.Availabilities.length}}{{this.Availabilities.[0].subject}}{{else}}Nenhuma Disponibilidade{{/if}}
+            </td>
+            <td class='py-3 px-6 text-left'>
+              {{#if this.Availabilities.length}}{{this.Availabilities.[0].day}}{{else}}--{{/if}}
+            </td>
+            <td class='py-3 px-6 text-left'>
+              {{#if this.Availabilities.length}}{{formatTime this.Availabilities.[0].startTime}}{{else}}--{{/if}}
+            </td>
+            <td class='py-3 px-6 text-left'>
+              {{#if this.Availabilities.length}}{{formatTime this.Availabilities.[0].endTime}}{{else}}--{{/if}}
+            </td>
+            <td class='py-3 px-6 text-center'>
+              <div class='flex item-center justify-center'>
+                {{#if this.Availabilities.length}}
+                  <a
+                    href='/admin/availability/edit/{{this.Availabilities.[0].id}}'
+                    class='w-4 mr-2 transform hover:text-yellow-500 hover:scale-110'
+                  >
+                    <svg
+                      xmlns='http://www.w3.org/2000/svg'
+                      class='h-6 w-6'
+                      fill='none'
+                      viewBox='0 0 24 24'
+                      stroke='currentColor'
+                    >
+                      <path
+                        stroke-linecap='round'
+                        stroke-linejoin='round'
+                        stroke-width='2'
+                        d='M21.731 2.269a2.625 2.625 0 0 0-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 0 0 0-3.712ZM19.513 8.199l-3.712-3.712-8.4 8.4a5.25 5.25 0 0 0-1.32 2.214l-.8 2.685a.75.75 0 0 0 .933.933l2.685-.8a5.25 5.25 0 0 0 2.214-1.32l8.4-8.4Z'
+                      />
+                    </svg>
+                  </a>
+                  <form action='/admin/availability/delete/{{this.Availabilities.[0].id}}' method='POST' class='inline'>
+                    <button type='submit' class='w-4 mr-2 transform hover:text-red-500 hover:scale-110'>
+                      <svg
+                        xmlns='http://www.w3.org/2000/svg'
+                        fill='none'
+                        viewBox='0 0 24 24'
+                        stroke-width='2'
+                        stroke='currentColor'
+                        class='h-6 w-6'
+                      >
+                        <path
+                          stroke-linecap='round'
+                          stroke-linejoin='round'
+                          d='M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0'
+                        />
+                      </svg>
+                    </button>
+                  </form>
+                {{else}}
+                  <p class='text-gray-500'>Sem ações</p>
+                {{/if}}
+              </div>
+            </td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+{{else}}
+  <p class='text-gray-500'>Nenhuma monitoria encontrada.</p>
+{{/if}}
+
+<!-- Modal para Cadastrar Monitoria -->
+<div
+  id='createTutoringModal'
+  class='fixed inset-0 items-center justify-center bg-black bg-opacity-50 hidden'
+>
+  <div class='bg-white p-8 rounded-lg shadow-lg max-w-lg w-full'>
+    <h2 class='text-xl font-bold mb-4'>Cadastrar Monitoria</h2>
+    <form
+      id='createTutoringForm'
+      action='/admin/availability/create'
+      method='POST'
+    >
+      <div class='mb-4'>
+        <label for='monitor' class='block text-gray-700'>Monitor</label>
+        <input
+          type='text'
+          name='monitor'
+          id='monitor'
+          class='w-full border rounded px-4 py-2'
+          oninput='autoCompleteMonitor()'
+          autocomplete='off'
+        />
+        <ul
+          id='monitorList'
+          class='absolute bg-white border mt-1 w-full hidden'
+        ></ul>
+      </div>
+      <div class='mb-4'>
+        <label for='subject' class='block text-gray-700'>Disciplina</label>
+        <input
+          type='text'
+          name='subject'
+          id='subject'
+          class='w-full border rounded px-4 py-2'
+        />
+      </div>
+      <div class='mb-4'>
+        <label for='day' class='block text-gray-700'>Dia</label>
+        <select name='day' id='day' class='w-full border rounded px-4 py-2'>
+          <option value='Segunda-feira'>Segunda-feira</option>
+          <option value='Terça-feira'>Terça-feira</option>
+          <option value='Quarta-feira'>Quarta-feira</option>
+          <option value='Quinta-feira'>Quinta-feira</option>
+          <option value='Sexta-feira'>Sexta-feira</option>
+        </select>
+      </div>
+      <div class='mb-4'>
+        <label for='startTime' class='block text-gray-700'>Hora de Início</label>
+        <input
+          type='time'
+          name='startTime'
+          id='startTime'
+          class='w-full border rounded px-4 py-2'
+        />
+      </div>
+      <div class='mb-4'>
+        <label for='endTime' class='block text-gray-700'>Hora de Fim</label>
+        <input
+          type='time'
+          name='endTime'
+          id='endTime'
+          class='w-full border rounded px-4 py-2'
+        />
+      </div>
+      <div class='flex justify-end'>
+        <button
+          type='button'
+          class='bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded mr-2'
+          onclick='closeModal()'
+        >Cancelar</button>
+        <button
+          type='submit'
+          class='bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded'
+        >Cadastrar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  function filterAvailabilities() {
+    const searchMonitor = document.getElementById('searchMonitor').value.toLowerCase();
+    const searchSubject = document.getElementById('searchSubject').value.toLowerCase();
+    const dayFilter = document.getElementById('dayFilter').value;
+    const rows = document.querySelectorAll('.availability-row');
+    rows.forEach(row => {
+      const monitorName = row.getAttribute('data-monitor').toLowerCase();
+      const subject = row.getAttribute('data-subject').toLowerCase();
+      const day = row.getAttribute('data-day');
+      const monitorMatches = monitorName.includes(searchMonitor);
+      const subjectMatches = subject.includes(searchSubject);
+      const dayMatches = dayFilter === 'Todos' || day === dayFilter;
+      if (monitorMatches && subjectMatches && dayMatches) {
+        row.style.display = '';
+      } else {
+        row.style.display = 'none';
+      }
+    });
+  }
+
+  function openModal() {
+    document.getElementById('createTutoringModal').classList.remove('hidden');
+    document.getElementById('createTutoringModal').classList.add('flex');
+  }
+
+  function closeModal() {
+    document.getElementById('createTutoringModal').classList.add('hidden');
+    document.getElementById('createTutoringModal').classList.remove('flex');
+  }
+
+  function autoCompleteMonitor() {
+    const input = document.getElementById('monitor').value.toLowerCase();
+    const monitorList = document.getElementById('monitorList');
+    if (input.length < 2) {
+      monitorList.innerHTML = '';
+      monitorList.classList.add('hidden');
+      return;
+    }
+    fetch(`/admin/availability/search?query=${input}`)
+      .then(response => response.json())
+      .then(monitors => {
+        monitorList.innerHTML = '';
+        if (monitors.length > 0) {
+          monitorList.classList.remove('hidden');
+          monitors.forEach(monitor => {
+            const li = document.createElement('li');
+            li.textContent = monitor.name;
+            li.classList.add('cursor-pointer', 'p-2', 'hover:bg-gray-100');
+            li.onclick = () => {
+              document.getElementById('monitor').value = monitor.name;
+              monitorList.innerHTML = '';
+              monitorList.classList.add('hidden');
+            };
+            monitorList.appendChild(li);
+          });
+        } else {
+          monitorList.classList.add('hidden');
+        }
+      });
+  }
+</script>
