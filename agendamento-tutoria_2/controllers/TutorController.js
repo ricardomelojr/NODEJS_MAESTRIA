@@ -107,26 +107,28 @@ export default class TutorController {
     const { attendanceDate, attendance } = req.body; // JSON enviado pelo fetch
 
     try {
+      // Verifica se já existe um registro de presença para a data especificada
+      const existingRecord = await Attendance.findOne({
+        where: { idAvailability: availabilityId, date: attendanceDate },
+      });
+
+      // Se já existe um registro, não permite a edição
+      if (existingRecord) {
+        req.flash('error_msg', 'Não é permitido editar a lista de presenças para esta data, pois já foi registrada.');
+        return res
+          .status(400)
+          .json({ error: 'Não é permitido editar a lista de presenças para esta data, pois já foi registrada.' });
+      }
+
       // Loop para salvar a presença ou ausência de cada aluno
       await Promise.all(
         Object.entries(attendance).map(async ([userId, status]) => {
-          const existingRecord = await Attendance.findOne({
-            where: { idUser: userId, idAvailability: availabilityId, date: attendanceDate },
+          await Attendance.create({
+            idUser: userId,
+            idAvailability: availabilityId,
+            date: attendanceDate,
+            status,
           });
-
-          if (existingRecord) {
-            await Attendance.update(
-              { status },
-              { where: { idUser: userId, idAvailability: availabilityId, date: attendanceDate } }
-            );
-          } else {
-            await Attendance.create({
-              idUser: userId,
-              idAvailability: availabilityId,
-              date: attendanceDate,
-              status,
-            });
-          }
         })
       );
 
@@ -144,34 +146,58 @@ export default class TutorController {
 
   static async attendanceHistory(req, res) {
     try {
-      const tutorId = req.session.user?.id;
+      // Obtém o ID do tutor da sessão
+      const tutorId = req.session.user.id;
+
       if (!tutorId) {
         req.flash('error_msg', 'Sessão do tutor não encontrada.');
         return res.redirect('/login');
       }
 
-      // Paginação
-      const limit = 10; // Número de sessões por página
-      const offset = req.query.page ? (req.query.page - 1) * limit : 0;
-
-      // Buscar todas as disponibilidades (sessões) desse tutor, incluindo a presença dos alunos
-      const sessions = await Availability.findAll({
-        where: { idUser: tutorId }, // Filtra as sessões do tutor
-        limit,
-        offset,
-        attributes: ['id', 'day'], // Seleciona apenas as colunas necessárias
+      const attendanceHistory = await Attendance.findAll({
+        attributes: [
+          'date', // Atributo 'date' das sessões de monitoria
+          'idAvailability', // Atributo 'idAvailability' relacionado a cada sessão
+        ],
+        where: {
+          '$Availability.idUser$': tutorId, // Filtra pelo ID do tutor
+        },
+        include: [
+          {
+            model: Availability,
+            attributes: ['subject'], // Inclui o atributo 'subject' da model Availability
+          },
+        ],
+        group: ['date', 'idAvailability'], // Agrupar por data e idAvailability
+        order: [['date', 'DESC']], // Ordenar pela data mais recente
       });
 
-      // Formatar as informações de sessões para passar para o template
-      const historyData = sessions.map((session) => ({
-        day: moment(session.day).format('YYYY-MM-DD'), // Formato da data
-        id: session.id, // Para possível uso futuro
+      // Verifica se há sessões no histórico
+      if (!attendanceHistory.length) {
+        req.flash('info_msg', 'Nenhuma sessão registrada.');
+        return res.redirect('/tutor/dashboard');
+      }
+
+      // Função para formatar a data no formato dd/mm/yyyy
+      const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0'); // Meses começam do zero
+        const year = date.getFullYear();
+        return `${day}/${month}/${year}`;
+      };
+
+      // Formata as datas e adiciona o subject antes de enviar para o template
+      const formattedAttendanceHistory = attendanceHistory.map((session) => ({
+        ...session.get(),
+        date: formatDate(session.date),
+        subject: session.Availability.subject, // Adiciona o subject à sessão
       }));
 
-      // Renderizar a página de histórico com os dados formatados
+      // Renderiza a página de histórico, passando o histórico das sessões
       res.render('tutor/history', {
         title: 'Histórico de Sessões',
-        history: historyData, // Passa o formato correto para o template
+        sessions: formattedAttendanceHistory, // Passa o histórico de sessões formatadas para o template
         user: req.session.user,
         layout: 'main',
       });
