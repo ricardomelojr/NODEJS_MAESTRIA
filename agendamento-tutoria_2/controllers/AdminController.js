@@ -25,14 +25,8 @@ export default class AdminController {
         layout: 'main', // Usando o layout principal
       });
     } catch (error) {
-      console.error(
-        'Erro ao carregar a página de criação de monitoria:',
-        error
-      );
-      req.flash(
-        'error_msg',
-        'Erro ao carregar a página de criação de monitoria.'
-      );
+      console.error('Erro ao carregar a página de criação de monitoria:', error);
+      req.flash('error_msg', 'Erro ao carregar a página de criação de monitoria.');
       res.redirect('/admin/dashboard');
     }
   }

@@ -2,18 +2,10 @@
 
 <h1 class='text-2xl font-bold mb-4'>Cadastrar Monitoria</h1>
 
-<form
-  id='tutoringForm'
-  action='/admin/availability/create'
-  method='POST'
-  class='space-y-4'
->
+<form id='tutoringForm' action='/admin/availability/create' method='POST' class='space-y-4'>
   <!-- Campo Monitor -->
   <div>
-    <label
-      for='monitor'
-      class='block text-sm font-medium text-gray-700'
-    >Monitor</label>
+    <label for='monitor' class='block text-sm font-medium text-gray-700'>Monitor</label>
     <input
       type='text'
       id='monitor'
@@ -29,10 +21,7 @@
 
   <!-- Campo Disciplina -->
   <div>
-    <label
-      for='subject'
-      class='block text-sm font-medium text-gray-700'
-    >Disciplina</label>
+    <label for='subject' class='block text-sm font-medium text-gray-700'>Disciplina</label>
     <input
       type='text'
       id='subject'
@@ -45,14 +34,8 @@
 
   <!-- Campo Dia da Semana -->
   <div>
-    <label for='day' class='block text-sm font-medium text-gray-700'>Dia da
-      Semana</label>
-    <select
-      id='day'
-      name='day'
-      class='mt-1 block w-full border-gray-300 rounded-md shadow-sm'
-      required
-    >
+    <label for='day' class='block text-sm font-medium text-gray-700'>Dia da Semana</label>
+    <select id='day' name='day' class='mt-1 block w-full border-gray-300 rounded-md shadow-sm' required>
       <option value='Segunda-feira'>Segunda-feira</option>
       <option value='Terça-feira'>Terça-feira</option>
       <option value='Quarta-feira'>Quarta-feira</option>
@@ -66,10 +49,7 @@
   <!-- Campo Hora de Início e Fim -->
   <div class='grid grid-cols-2 gap-4'>
     <div>
-      <label
-        for='startTime'
-        class='block text-sm font-medium text-gray-700'
-      >Hora de Início</label>
+      <label for='startTime' class='block text-sm font-medium text-gray-700'>Hora de Início</label>
       <input
         type='time'
         id='startTime'
@@ -79,8 +59,7 @@
       />
     </div>
     <div>
-      <label for='endTime' class='block text-sm font-medium text-gray-700'>Hora
-        de Fim</label>
+      <label for='endTime' class='block text-sm font-medium text-gray-700'>Hora de Fim</label>
       <input
         type='time'
         id='endTime'
@@ -93,24 +72,17 @@
 
   <!-- Botão Criar -->
   <div>
-    <button
-      type='submit'
-      class='bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded'
-    >Criar</button>
+    <button type='submit' class='bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded'>Criar</button>
   </div>
 </form>
 
 <script>
-  document.getElementById('monitor').addEventListener('input', async function()
-  { const query = this.value; const suggestionsBox =
-  document.getElementById('monitorSuggestions'); if (query.length >= 2) { const
-  response = await fetch(`/admin/availability/search?query=${query}`); const
-  monitors = await response.json(); suggestionsBox.innerHTML = '';
-  monitors.forEach(monitor => { const li = document.createElement('li');
-  li.textContent = monitor.name; li.classList.add('cursor-pointer', 'p-2',
-  'hover:bg-gray-100'); li.addEventListener('click', function() {
-  document.getElementById('monitor').value = monitor.name;
-  suggestionsBox.innerHTML = ''; }); suggestionsBox.appendChild(li); });
-  suggestionsBox.classList.remove('hidden'); } else { suggestionsBox.innerHTML =
-  ''; suggestionsBox.classList.add('hidden'); } });
+  document.getElementById('monitor').addEventListener('input', async function() { const query = this.value; const
+  suggestionsBox = document.getElementById('monitorSuggestions'); if (query.length >= 2) { const response = await
+  fetch(`/admin/availability/search?query=${query}`); const monitors = await response.json(); suggestionsBox.innerHTML =
+  ''; monitors.forEach(monitor => { const li = document.createElement('li'); li.textContent = monitor.name;
+  li.classList.add('cursor-pointer', 'p-2', 'hover:bg-gray-100'); li.addEventListener('click', function() {
+  document.getElementById('monitor').value = monitor.name; suggestionsBox.innerHTML = ''; });
+  suggestionsBox.appendChild(li); }); suggestionsBox.classList.remove('hidden'); } else { suggestionsBox.innerHTML = '';
+  suggestionsBox.classList.add('hidden'); } });
 </script>

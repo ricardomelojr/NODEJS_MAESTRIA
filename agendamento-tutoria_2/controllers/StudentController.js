@@ -38,12 +38,10 @@ export default class StudentController {
         attributes: ['idAvailability'],
       });
 
-      const registeredIds = registeredTutoring.map(tutoring =>
-        Number(tutoring.idAvailability)
-      );
+      const registeredIds = registeredTutoring.map((tutoring) => Number(tutoring.idAvailability));
 
-      tutors.forEach(tutor => {
-        tutor.Availabilities.forEach(availability => {
+      tutors.forEach((tutor) => {
+        tutor.Availabilities.forEach((availability) => {
           availability.isRegistered = registeredIds.includes(availability.id);
         });
       });
@@ -90,18 +88,12 @@ export default class StudentController {
             [Op.or]: [
               {
                 startTime: {
-                  [Op.between]: [
-                    selectedAvailability.startTime,
-                    selectedAvailability.endTime,
-                  ],
+                  [Op.between]: [selectedAvailability.startTime, selectedAvailability.endTime],
                 },
               },
               {
                 endTime: {
-                  [Op.between]: [
-                    selectedAvailability.startTime,
-                    selectedAvailability.endTime,
-                  ],
+                  [Op.between]: [selectedAvailability.startTime, selectedAvailability.endTime],
                 },
               },
               {
@@ -124,10 +116,7 @@ export default class StudentController {
       });
 
       if (overlappingTutoring) {
-        req.flash(
-          'error_msg',
-          'Você já está inscrito em uma monitoria nesse horário.'
-        );
+        req.flash('error_msg', 'Você já está inscrito em uma monitoria nesse horário.');
         return res.redirect('/student/tutors');
       }
 

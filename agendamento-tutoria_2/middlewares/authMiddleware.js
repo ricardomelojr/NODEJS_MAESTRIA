@@ -15,10 +15,7 @@ export function isAdmin(req, res, next) {
   if (req.session.user && req.session.user.role === 'Administrador') {
     return next();
   } else {
-    req.flash(
-      'error_msg',
-      'Acesso negado. Apenas administradores podem acessar esta área.'
-    );
+    req.flash('error_msg', 'Acesso negado. Apenas administradores podem acessar esta área.');
     return res.redirect(getCorrectDashboard(req.session.user.role));
   }
 }
@@ -28,23 +25,17 @@ export function isAluno(req, res, next) {
   if (req.session.user && req.session.user.role === 'Aluno') {
     return next();
   } else {
-    req.flash(
-      'error_msg',
-      'Acesso negado. Apenas estudantes podem acessar esta área.'
-    );
+    req.flash('error_msg', 'Acesso negado. Apenas estudantes podem acessar esta área.');
     return res.redirect(getCorrectDashboard(req.session.user.role));
   }
 }
 
 // Verifica se o usuário é Tutor
 export function isTutor(req, res, next) {
-  if (req.session.user && req.session.user.role === 'Tutor') {
+  if (req.session.user && req.session.user.role === 'Monitor') {
     return next();
   } else {
-    req.flash(
-      'error_msg',
-      'Acesso negado. Apenas tutores podem acessar esta área.'
-    );
+    req.flash('error_msg', 'Acesso negado. Apenas tutores podem acessar esta área.');
     return res.redirect(getCorrectDashboard(req.session.user.role));
   }
 }
@@ -56,7 +47,7 @@ function getCorrectDashboard(role) {
       return '/admin/dashboard';
     case 'Aluno':
       return '/student/dashboard';
-    case 'Tutor':
+    case 'Monitor':
       return '/tutor/dashboard';
     default:
       return '/auth/login';

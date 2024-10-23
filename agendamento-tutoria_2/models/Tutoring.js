@@ -31,7 +31,7 @@ const Tutoring = sequelize.define(
   {
     timestamps: false, // Se você não precisa de campos createdAt e updatedAt
     tableName: 'Tutoring', // Nome da tabela
-  }
+  },
 );
 
 // Definir as associações

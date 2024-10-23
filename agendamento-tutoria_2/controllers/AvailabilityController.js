@@ -26,10 +26,7 @@ export default class AvailabilityController {
 
     // Validação dos campos obrigatórios
     if (!monitor || !subject || !day || !startTime || !endTime) {
-      req.flash(
-        'error_msg',
-        'Todos os campos são obrigatórios. Por favor, preencha todos os dados.'
-      );
+      req.flash('error_msg', 'Todos os campos são obrigatórios. Por favor, preencha todos os dados.');
       return res.redirect('/admin/availability');
     }
 
@@ -79,10 +76,7 @@ export default class AvailabilityController {
       });
 
       if (overlappingAvailability) {
-        req.flash(
-          'error_msg',
-          'O monitor já tem uma monitoria nesse intervalo de horário.'
-        );
+        req.flash('error_msg', 'O monitor já tem uma monitoria nesse intervalo de horário.');
         return res.redirect('/admin/availability');
       }
 
