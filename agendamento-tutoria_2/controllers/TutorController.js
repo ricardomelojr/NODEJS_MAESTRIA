@@ -146,7 +146,6 @@ export default class TutorController {
 
   static async attendanceHistory(req, res) {
     try {
-      // Obtém o ID do tutor da sessão
       const tutorId = req.session.user.id;
 
       if (!tutorId) {
@@ -155,55 +154,83 @@ export default class TutorController {
       }
 
       const attendanceHistory = await Attendance.findAll({
-        attributes: [
-          'date', // Atributo 'date' das sessões de monitoria
-          'idAvailability', // Atributo 'idAvailability' relacionado a cada sessão
-        ],
+        attributes: ['date', 'idAvailability'],
         where: {
-          '$Availability.idUser$': tutorId, // Filtra pelo ID do tutor
+          '$Availability.idUser$': tutorId,
         },
         include: [
           {
             model: Availability,
-            attributes: ['subject'], // Inclui o atributo 'subject' da model Availability
+            attributes: ['subject'],
           },
         ],
-        group: ['date', 'idAvailability'], // Agrupar por data e idAvailability
-        order: [['date', 'DESC']], // Ordenar pela data mais recente
+        group: ['date', 'idAvailability'],
+        order: [['date', 'DESC']],
       });
 
-      // Verifica se há sessões no histórico
       if (!attendanceHistory.length) {
         req.flash('info_msg', 'Nenhuma sessão registrada.');
         return res.redirect('/tutor/dashboard');
       }
 
-      // Função para formatar a data no formato dd/mm/yyyy
+      // Função para formatar e ajustar a data ao fuso horário
       const formatDate = (dateString) => {
         const date = new Date(dateString);
+        date.setHours(date.getHours() + 4); // Ajuste UTC-4 para Manaus
         const day = String(date.getDate()).padStart(2, '0');
-        const month = String(date.getMonth() + 1).padStart(2, '0'); // Meses começam do zero
+        const month = String(date.getMonth() + 1).padStart(2, '0');
         const year = date.getFullYear();
         return `${day}/${month}/${year}`;
       };
 
-      // Formata as datas e adiciona o subject antes de enviar para o template
       const formattedAttendanceHistory = attendanceHistory.map((session) => ({
         ...session.get(),
         date: formatDate(session.date),
-        subject: session.Availability.subject, // Adiciona o subject à sessão
+        subject: session.Availability.subject,
       }));
 
-      // Renderiza a página de histórico, passando o histórico das sessões
       res.render('tutor/history', {
         title: 'Histórico de Sessões',
-        sessions: formattedAttendanceHistory, // Passa o histórico de sessões formatadas para o template
+        sessions: formattedAttendanceHistory,
         user: req.session.user,
         layout: 'main',
       });
     } catch (error) {
       console.error('Erro ao carregar o histórico de sessões:', error);
       req.flash('error_msg', 'Erro ao carregar o histórico de sessões.');
+      res.redirect('/tutor/dashboard');
+    }
+  }
+
+  static async students(req, res) {
+    const idAvailability = req.params.id;
+
+    try {
+      // Busca todos os alunos e suas respectivas presenças e faltas
+      const studentsData = await Attendance.findAll({
+        attributes: [
+          'idUser',
+          [sequelize.literal(`SUM(CASE WHEN status = 'presente' THEN 1 ELSE 0 END)`), 'presencas'],
+          [sequelize.literal(`SUM(CASE WHEN status = 'ausente' THEN 1 ELSE 0 END)`), 'faltas'],
+        ],
+        where: { idAvailability: idAvailability },
+        include: [
+          {
+            model: User,
+            attributes: ['name'],
+          },
+        ],
+        group: ['idUser', 'User.name'],
+      });
+
+      res.render('tutor/students', {
+        title: 'Lista de Alunos',
+        students: studentsData,
+        layout: 'main',
+      });
+    } catch (error) {
+      console.error('Erro ao carregar a lista de alunos:', error);
+      req.flash('error_msg', 'Erro ao carregar a lista de alunos.');
       res.redirect('/tutor/dashboard');
     }
   }

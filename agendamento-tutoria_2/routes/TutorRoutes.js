@@ -13,6 +13,7 @@ router.get('/dashboard', TutorController.dashboard);
 router.get('/schedule', TutorController.schedule);
 router.get('/attendance/history', TutorController.attendanceHistory);
 router.get('/attendance/:id', TutorController.attendance);
+router.get('/students/:id', TutorController.students);
 
 /* POST */
 router.post('/attendance/:id', TutorController.saveAttendance);
