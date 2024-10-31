@@ -223,9 +223,16 @@ export default class TutorController {
         group: ['idUser', 'User.name'],
       });
 
+      // Mapeia os dados para um formato mais simples
+      const formattedStudentsData = studentsData.map((student) => ({
+        name: student.User.name,
+        presencas: student.get('presencas'),
+        faltas: student.get('faltas'),
+      }));
+
       res.render('tutor/students', {
         title: 'Lista de Alunos',
-        students: studentsData,
+        students: formattedStudentsData, // Passa o array formatado
         layout: 'main',
       });
     } catch (error) {

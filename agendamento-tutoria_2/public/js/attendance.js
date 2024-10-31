@@ -28,13 +28,16 @@ document.getElementById('attendanceForm').addEventListener('submit', async funct
     console.log('Resposta do servidor:', result);
 
     if (response.ok) {
-      //window.location.href = '/tutor/dashboard'; // Redirecionar para o dashboard após salvar a presença
+      // Redireciona para o histórico de presença, onde a mensagem de sucesso aparecerá
       window.location.href = '/tutor/attendance/history';
     } else {
-      alert(result.error || 'Erro ao salvar a presença.');
+      // Aqui, em vez de um alert, apenas deixa o Controller enviar a mensagem de erro por req.flash
+      console.error(result.error || 'Erro ao salvar a presença.');
+      window.location.href = '/tutor/attendance/history';
     }
   } catch (error) {
     console.error('Erro ao enviar a presença:', error);
-    alert('Erro ao enviar a presença.');
+    // Redireciona para a página onde a mensagem de erro será exibida
+    window.location.href = '/tutor/attendance/history';
   }
 });
