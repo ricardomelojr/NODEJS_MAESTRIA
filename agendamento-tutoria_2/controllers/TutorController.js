@@ -104,23 +104,19 @@ export default class TutorController {
 
   static async saveAttendance(req, res) {
     const availabilityId = req.params.id;
-    const { attendanceDate, attendance } = req.body; // JSON enviado pelo fetch
+    const { attendanceDate, attendance } = req.body;
 
     try {
-      // Verifica se já existe um registro de presença para a data especificada
       const existingRecord = await Attendance.findOne({
         where: { idAvailability: availabilityId, date: attendanceDate },
       });
 
-      // Se já existe um registro, não permite a edição
       if (existingRecord) {
-        req.flash('error_msg', 'Não é permitido editar a lista de presenças para esta data, pois já foi registrada.');
         return res
           .status(400)
           .json({ error: 'Não é permitido editar a lista de presenças para esta data, pois já foi registrada.' });
       }
 
-      // Loop para salvar a presença ou ausência de cada aluno
       await Promise.all(
         Object.entries(attendance).map(async ([userId, status]) => {
           await Attendance.create({
@@ -132,14 +128,9 @@ export default class TutorController {
         })
       );
 
-      // Usar req.flash para enviar uma mensagem de sucesso
-      req.flash('success_msg', 'Lista de presença salva com sucesso!');
-      res.status(200).json({ message: 'Presença salva com sucesso!' });
+      res.status(200).json({ message: 'Lista de presença salva com sucesso!' });
     } catch (error) {
       console.error('Erro ao salvar a lista de presença:', error);
-
-      // Usar req.flash para enviar uma mensagem de erro
-      req.flash('error_msg', 'Erro ao salvar a lista de presença.');
       res.status(500).json({ error: 'Erro ao salvar a lista de presença.' });
     }
   }
