@@ -25,17 +25,27 @@
                 <!-- Botão Gerenciar Presença -->
                 <a
                   href='/tutor/attendance/{{this.id}}'
-                  class='bg-blue-500 hover:bg-blue-600 text-white text-sm font-semibold py-2 px-4 rounded-md mx-2'
+                  class='bg-gray-200 text-gray-700 hover:bg-gray-300 text-sm font-semibold py-2 px-4 rounded mx-2 border-dotted border'
                 >
                   Gerenciar Presença
                 </a>
                 <!-- Botão Alunos -->
                 <a
                   href='/tutor/students/{{this.id}}'
-                  class='bg-green-500 hover:bg-green-600 text-white text-sm font-semibold py-2 px-4 rounded-md mx-2'
+                  class='bg-gray-200 text-gray-700 hover:bg-gray-300 text-sm font-semibold py-2 px-4 rounded mx-2 border-dotted border'
                 >
                   Alunos
                 </a>
+                <!-- Formulário para redirecionamento ao histórico sem exibir o id na URL -->
+                <form action='/tutor/history' method='POST' style='display: inline;'>
+                  <input type='hidden' name='idAvailability' value='{{this.id}}' />
+                  <button
+                    type='submit'
+                    class='bg-gray-200 text-gray-700 hover:bg-gray-300 text-sm font-semibold py-2 px-4 rounded mx-2 border-dotted border'
+                  >
+                    Histórico
+                  </button>
+                </form>
               </td>
             </tr>
           {{/each}}

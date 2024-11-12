@@ -135,64 +135,6 @@ export default class TutorController {
     }
   }
 
-  static async attendanceHistory(req, res) {
-    try {
-      const tutorId = req.session.user.id;
-
-      if (!tutorId) {
-        req.flash('error_msg', 'Sessão do tutor não encontrada.');
-        return res.redirect('/login');
-      }
-
-      const attendanceHistory = await Attendance.findAll({
-        attributes: ['date', 'idAvailability'],
-        where: {
-          '$Availability.idUser$': tutorId,
-        },
-        include: [
-          {
-            model: Availability,
-            attributes: ['subject'],
-          },
-        ],
-        group: ['date', 'idAvailability'],
-        order: [['date', 'DESC']],
-      });
-
-      if (!attendanceHistory.length) {
-        req.flash('info_msg', 'Nenhuma sessão registrada.');
-        return res.redirect('/tutor/dashboard');
-      }
-
-      // Função para formatar e ajustar a data ao fuso horário
-      const formatDate = (dateString) => {
-        const date = new Date(dateString);
-        date.setHours(date.getHours() + 4); // Ajuste UTC-4 para Manaus
-        const day = String(date.getDate()).padStart(2, '0');
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const year = date.getFullYear();
-        return `${day}/${month}/${year}`;
-      };
-
-      const formattedAttendanceHistory = attendanceHistory.map((session) => ({
-        ...session.get(),
-        date: formatDate(session.date),
-        subject: session.Availability.subject,
-      }));
-
-      res.render('tutor/history', {
-        title: 'Histórico de Sessões',
-        sessions: formattedAttendanceHistory,
-        user: req.session.user,
-        layout: 'main',
-      });
-    } catch (error) {
-      console.error('Erro ao carregar o histórico de sessões:', error);
-      req.flash('error_msg', 'Erro ao carregar o histórico de sessões.');
-      res.redirect('/tutor/dashboard');
-    }
-  }
-
   static async students(req, res) {
     const idAvailability = req.params.id;
 
@@ -230,6 +172,81 @@ export default class TutorController {
       console.error('Erro ao carregar a lista de alunos:', error);
       req.flash('error_msg', 'Erro ao carregar a lista de alunos.');
       res.redirect('/tutor/dashboard');
+    }
+  }
+
+  static async history(req, res) {
+    const { idAvailability } = req.body;
+
+    try {
+      // Carregar dados do histórico com o idAvailability
+      const historyDataRaw = await Attendance.findAll({ where: { idAvailability } });
+
+      // Mapear e formatar as datas no backend usando Moment.js para ajustar o fuso horário
+      const historyData = historyDataRaw.map((session) => ({
+        ...session.toJSON(),
+        formattedDate: moment(session.date).format('DD/MM/YYYY'), // Formatando para o horário local
+      }));
+
+      // Função para remover datas duplicadas
+      const filterUniqueDates = (data) => {
+        const uniqueDates = new Set();
+        return data.filter((item) => {
+          if (uniqueDates.has(item.formattedDate)) {
+            return false; // Ignorar se a data já foi encontrada
+          }
+          uniqueDates.add(item.formattedDate);
+          return true; // Incluir se for a primeira vez que essa data é encontrada
+        });
+      };
+
+      // Filtrar datas duplicadas
+      const filteredHistoryData = filterUniqueDates(historyData);
+
+      /* console.log(filteredHistoryData); */
+
+      // Renderizar a página com os dados filtrados
+      res.render('tutor/history', { historyData: filteredHistoryData });
+    } catch (error) {
+      console.error('Erro ao carregar o histórico:', error);
+      req.flash('error_msg', 'Erro ao carregar o histórico.');
+      res.redirect('/tutor/dashboard');
+    }
+  }
+
+  static async getSessionDetails(req, res) {
+    const { idAvailability, date } = req.body;
+    const [day, month, year] = date.split('/');
+
+    try {
+      // Ajusta a data para o formato YYYY-MM-DD
+      const formattedDate = `${year}-${month}-${day}`;
+      console.log(formattedDate);
+
+      // Consulta os alunos presentes ou ausentes em uma sessão específica
+      const students = await Attendance.findAll({
+        where: {
+          idAvailability,
+          date: formattedDate, // Usando a data formatada
+        },
+        include: [
+          {
+            model: User,
+            attributes: ['name'],
+          },
+        ],
+      });
+
+      // Prepara os dados para enviar como resposta
+      const response = students.map((student) => ({
+        studentName: student.User.name,
+        status: student.status,
+      }));
+
+      res.json({ success: true, students: response });
+    } catch (error) {
+      console.error('Erro ao buscar detalhes da sessão:', error);
+      res.json({ success: false, message: 'Erro ao buscar detalhes da sessão' });
     }
   }
 }
